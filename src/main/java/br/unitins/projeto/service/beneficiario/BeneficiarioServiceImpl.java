@@ -139,9 +139,16 @@ public class BeneficiarioServiceImpl implements BeneficiarioService{
     @Override
     public List<BeneficiarioResponseDTO> findByNome(String nome) {
 
-          List<Beneficiario> list = beneficiarioRepository.findByNome(nome);
+        List<Beneficiario> list = beneficiarioRepository.findByNome(nome);
         return list.stream().map(BeneficiarioResponseDTO::new).collect(Collectors.toList());
     
+    }
+
+    @Override
+    public List<BeneficiarioResponseDTO> findByCpf(String cpf) {
+       
+        List<Beneficiario> list = beneficiarioRepository.findByCPF(cpf);
+        return list.stream().map(BeneficiarioResponseDTO::new).collect(Collectors.toList());
     }
     
 }

@@ -135,4 +135,26 @@ public class BeneficiarioResource {
 
         return Response.status(Status.NOT_FOUND).entity(result).build();
     }
+
+    @GET
+    @Path("/search/{cpf}")
+    public Response searchCpf(@PathParam("cpf") String cpf) {
+        LOG.infof("Pesquisando beneficiarios pelo nome: %s", cpf);
+        Result result = null;
+
+        try {
+            List<BeneficiarioResponseDTO> response = service.findByCpf(cpf);
+            LOG.infof("Pesquisa realizada com sucesso.");
+            return Response.ok(response).build();
+        } catch (ConstraintViolationException e) {
+            LOG.error("Erro ao pesquisar beneficiarios.");
+            LOG.debug(e.getMessage());
+            result = new Result(e.getConstraintViolations());
+        } catch (Exception e) {
+            LOG.fatal("Erro sem identificacao: " + e.getMessage());
+            result = new Result(e.getMessage(), false);
+        }
+
+        return Response.status(Status.NOT_FOUND).entity(result).build();
+    }
 }

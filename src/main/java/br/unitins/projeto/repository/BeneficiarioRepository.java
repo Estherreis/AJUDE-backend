@@ -15,4 +15,10 @@ public class BeneficiarioRepository implements PanacheRepository<Beneficiario> {
         return find("UPPER(nome) LIKE ?1 ", "%"+nome.toUpperCase()+"%").list();
     }
 
+    public List<Beneficiario> findByCPF(String cpf){
+        if (cpf == null)
+            return null;
+        return find("cpf LIKE ?1 ", "%"+cpf+"%").list();
+    }
+
 }

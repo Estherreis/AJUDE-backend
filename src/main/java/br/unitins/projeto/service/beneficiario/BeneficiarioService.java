@@ -18,6 +18,8 @@ public interface BeneficiarioService {
 
     List<BeneficiarioResponseDTO> findByNome(String nome);
 
+    List<BeneficiarioResponseDTO> findByCpf(String cpf);
+
     void delete(Long id);
 
     Long count();
