@@ -17,5 +17,4 @@ public record MunicipioResponseDTO(
         EstadoResponseDTO estadoResponseDTO = new EstadoResponseDTO(estado);
         return estadoResponseDTO;
     }
-
 }
