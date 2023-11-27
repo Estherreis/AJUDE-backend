@@ -12,11 +12,13 @@ public record MovimentacaoResponseDTO(
     UsuarioResponseDTO nomeAutor,
     String descricao,
     AtendimentoResponseDTO atendimento,
-    LocalDateTime dataInclusao
+    LocalDateTime dataInclusao,
+    String tituloMovimentacao
 ) {
         public MovimentacaoResponseDTO (Movimentacao entity){
             
             this(entity.getId(), new UsuarioResponseDTO(entity.getUsuarioAutor()), entity.getDescricao(),
-            new AtendimentoResponseDTO(entity.getAtendimento()), entity.getDataInclusao());
+            new AtendimentoResponseDTO(entity.getAtendimento()), entity.getDataInclusao(),
+            entity.getTituloMovimentacao());
         }
 }

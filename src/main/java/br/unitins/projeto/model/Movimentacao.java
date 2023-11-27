@@ -8,6 +8,8 @@ import jakarta.persistence.ManyToOne;
 @Entity
 public class Movimentacao extends DefaultEntity{
     
+    private String tituloMovimentacao;
+
     @ManyToOne
     private Usuario usuarioAutor;
 
@@ -51,6 +53,14 @@ public class Movimentacao extends DefaultEntity{
 
     public void setAtendimento(Atendimento atendimento) {
         Atendimento = atendimento;
+    }
+
+        public String getTituloMovimentacao() {
+        return tituloMovimentacao;
+    }
+
+    public void setTituloMovimentacao(String tituloMovimentacao) {
+        this.tituloMovimentacao = tituloMovimentacao;
     }
 
 }

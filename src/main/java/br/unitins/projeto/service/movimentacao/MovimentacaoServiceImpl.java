@@ -34,6 +34,7 @@ public class MovimentacaoServiceImpl implements MovimentacaoService{
 
         LocalDateTime now = LocalDateTime.now();
 
+        entity.setTituloMovimentacao(movimentacaoDTO.tituloMovimentacao());
         entity.setUsuarioAutor(usuarioRepository.findById(movimentacaoDTO.usuarioAutor()));
         entity.setAtendimento(atendimentoRepository.findById(movimentacaoDTO.idAtendimento()));
         entity.setDescricao(movimentacaoDTO.descricao());
