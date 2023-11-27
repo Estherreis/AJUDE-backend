@@ -1,13 +1,12 @@
 package br.unitins.projeto.resource;
 
 import br.unitins.projeto.application.Result;
-import br.unitins.projeto.dto.orgao.OrgaoDTO;
-import br.unitins.projeto.dto.orgao.OrgaoResponseDTO;
-import br.unitins.projeto.service.orgao.OrgaoService;
+import br.unitins.projeto.dto.usuario.UsuarioDTO;
+import br.unitins.projeto.dto.usuario.UsuarioResponseDTO;
+import br.unitins.projeto.service.usuario.UsuarioService;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
@@ -20,41 +19,41 @@ import org.jboss.logging.Logger;
 
 import java.util.List;
 
-@Path("/orgaos")
+@Path("/usuarios")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class OrgaoResource {
+public class UsuarioResource {
 
     @Inject
-    OrgaoService service;
+    UsuarioService service;
 
-    private static final Logger LOG = Logger.getLogger(OrgaoResource.class);
+    private static final Logger LOG = Logger.getLogger(UsuarioResource.class);
 
     @GET
-    public List<OrgaoResponseDTO> getAll() {
-        LOG.info("Buscando todos os órgãos.");
+    public List<UsuarioResponseDTO> getAll() {
+        LOG.info("Buscando todos os usuários.");
         return service.getAll();
     }
 
     @GET
     @Path("/{id}")
-    public OrgaoResponseDTO findById(@PathParam("id") Long id) {
-        LOG.info("Buscando um órgão pelo id.");
+    public UsuarioResponseDTO findById(@PathParam("id") Long id) {
+        LOG.info("Buscando um usuário pelo id.");
         return service.findById(id);
     }
 
     @POST
 //    @RolesAllowed({"Admin"})
-    public Response insert(OrgaoDTO dto) {
-        LOG.infof("Inserindo um órgão: %s", dto.nome());
+    public Response insert(UsuarioDTO dto) {
+        LOG.infof("Inserindo um usuário: %s", dto.nome());
         Result result = null;
 
         try {
-            OrgaoResponseDTO response = service.create(dto);
-            LOG.infof("Órgão (%d) criado com sucesso.", response.id());
+            UsuarioResponseDTO response = service.create(dto);
+            LOG.infof("Usuário (%d) criado com sucesso.", response.id());
             return Response.status(Response.Status.CREATED).entity(response).build();
         } catch (ConstraintViolationException e) {
-            LOG.error("Erro ao incluir um órgão.");
+            LOG.error("Erro ao incluir um usuário.");
             LOG.debug(e.getMessage());
             result = new Result(e.getConstraintViolations());
         } catch (Exception e) {
@@ -68,39 +67,16 @@ public class OrgaoResource {
     @PUT
     @Path("/{id}")
 //    @RolesAllowed({"Admin"})
-    public Response update(@PathParam("id") Long id, OrgaoDTO dto) {
-        LOG.infof("Alterando um órgão: %s", dto.nome());
+    public Response update(@PathParam("id") Long id, UsuarioDTO dto) {
+        LOG.infof("Alterando um usuário: %s", dto.nome());
         Result result = null;
 
         try {
-            OrgaoResponseDTO response = service.update(id, dto);
-            LOG.infof("Órgão (%d) alterado com sucesso.", response.id());
+            UsuarioResponseDTO response = service.update(id, dto);
+            LOG.infof("Usuário (%d) alterado com sucesso.", response.id());
             return Response.ok(response).build();
         } catch (ConstraintViolationException e) {
-            LOG.error("Erro ao alterar um órgão.");
-            LOG.debug(e.getMessage());
-            result = new Result(e.getConstraintViolations());
-        } catch (Exception e) {
-            LOG.fatal("Erro sem identificacao: " + e.getMessage());
-            result = new Result(e.getMessage(), false);
-        }
-
-        return Response.status(Response.Status.NOT_FOUND).entity(result).build();
-    }
-
-    @DELETE
-    @Path("/{id}")
-//    @RolesAllowed({"Admin"})
-    public Response delete(@PathParam("id") Long id) {
-        LOG.infof("Deletando um órgão: %s", id);
-        Result result = null;
-
-        try {
-            service.delete(id);
-            LOG.infof("Órgão (%d) deletado com sucesso.", id);
-            return Response.status(Response.Status.NO_CONTENT).build();
-        } catch (ConstraintViolationException e) {
-            LOG.error("Erro ao deletar um órgão.");
+            LOG.error("Erro ao alterar um usuário.");
             LOG.debug(e.getMessage());
             result = new Result(e.getConstraintViolations());
         } catch (Exception e) {
@@ -115,15 +91,15 @@ public class OrgaoResource {
     @Path("/situacao/{id}")
 //    @RolesAllowed({"Admin"})
     public Response alterarSituacao(@PathParam("id") Long id, Boolean situacao) {
-        LOG.infof("Alterando situação do órgão");
+        LOG.infof("Alterando situação do usuário");
         Result result = null;
 
         try {
-            OrgaoResponseDTO response = service.alterarSituacao(id, situacao);
-            LOG.infof("Órgão (%d) alterado com sucesso.", response.id());
+            UsuarioResponseDTO response = service.alterarSituacao(id, situacao);
+            LOG.infof("Usuário (%d) alterado com sucesso.", response.id());
             return Response.ok(response).build();
         } catch (ConstraintViolationException e) {
-            LOG.error("Erro ao alterar um órgão.");
+            LOG.error("Erro ao alterar um usuário.");
             LOG.debug(e.getMessage());
             result = new Result(e.getConstraintViolations());
         } catch (Exception e) {
