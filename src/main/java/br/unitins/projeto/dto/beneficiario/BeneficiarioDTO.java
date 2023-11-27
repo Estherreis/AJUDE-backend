@@ -9,7 +9,7 @@ import jakarta.validation.constraints.Size;
 public record BeneficiarioDTO(
 
     @NotBlank(message = "O campo nome deve ser informado.")
-    @Size(max = 40, message = "O sigla deve posssuir 40 caracteres.")
+    @Size(max = 40, message = "O nome deve possuir no máximo 40 caracteres.")
     String nome,
 
     @NotBlank(message = "O campo CPF deve ser informado.")

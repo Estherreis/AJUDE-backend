@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @Entity
 @PrimaryKeyJoinColumn(name = "id")
 public class Atendimento extends DefaultEntity {
+    
     @ManyToOne
     @JoinColumn(name = "id_orgao", nullable = false)
     private Orgao orgao;
