@@ -4,8 +4,10 @@ import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrimaryKeyJoinColumn;
 
 @Entity
+@PrimaryKeyJoinColumn(name = "id")
 public class OrgaoPerfil extends DefaultEntity {
 
     @JoinColumn(name = "id_perfil", nullable = false)
@@ -14,6 +16,10 @@ public class OrgaoPerfil extends DefaultEntity {
     @ManyToOne
     @JoinColumn(name = "id_orgao", nullable = false)
     Orgao orgao;
+
+    @ManyToOne
+    @JoinColumn(name = "id_usuario", nullable = false)
+    Usuario usuario;
 
     public Perfil getPerfil() {
         return perfil;
@@ -29,5 +35,13 @@ public class OrgaoPerfil extends DefaultEntity {
 
     public void setOrgao(Orgao orgao) {
         this.orgao = orgao;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
     }
 }

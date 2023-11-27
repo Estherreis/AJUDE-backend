@@ -31,12 +31,6 @@ public class Usuario extends DefaultEntity {
     @Column(name = "ativo", nullable = false)
     private Boolean ativo;
 
-    @OneToMany
-    @JoinTable(name = "usuario_orgao_perfil",
-            joinColumns = @JoinColumn(name = "id_usuario"),
-            inverseJoinColumns = @JoinColumn(name = "id_orgao_perfil"))
-    List<OrgaoPerfil> orgaoPerfil;
-
     public String getNome() {
         return nome;
     }
@@ -83,13 +77,5 @@ public class Usuario extends DefaultEntity {
 
     public void setAtivo(Boolean ativo) {
         this.ativo = ativo;
-    }
-
-    public List<OrgaoPerfil> getOrgaoPerfil() {
-        return orgaoPerfil;
-    }
-
-    public void setOrgaoPerfil(List<OrgaoPerfil> orgaoPerfil) {
-        this.orgaoPerfil = orgaoPerfil;
     }
 }

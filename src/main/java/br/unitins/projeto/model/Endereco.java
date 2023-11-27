@@ -2,15 +2,18 @@ package br.unitins.projeto.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Endereco extends DefaultEntity {
 
     @ManyToOne
+    @JoinColumn(name = "id_estado", nullable = false)
     private Estado estado;
 
     @ManyToOne
+    @JoinColumn(name = "id_municipio", nullable = false)
     private Municipio municipio;
 
     @Column(nullable = false, length = 30)

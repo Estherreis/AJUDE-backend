@@ -21,8 +21,8 @@ public record EncaminhamentoResponseDTO(
     public EncaminhamentoResponseDTO(Encaminhamento entity) {
         this(entity.getId(), gerarOrgaoResponseDTO(entity.getOrgaoAtual()),
                 gerarOrgaoResponseDTO(entity.getOrgaoDestino()),
-                entity.getUsuarioInclusao().getNome() + " - " +
-                        entity.getUsuarioInclusao().getOrgaoPerfil().get(0).getOrgao().getNome(),
+                entity.getUsuarioInclusao().getNome() + " - ",
+//                        + entity.getUsuarioInclusao().getOrgaoPerfil().get(0).getOrgao().getNome(),
                 entity.getMotivo(),
                 entity.getDataInclusao(),
                 gerarUsuarioResponseDTO(entity.getUsuarioInclusao())

@@ -2,12 +2,15 @@ package br.unitins.projeto.service.usuario;
 
 import br.unitins.projeto.dto.orgao.OrgaoDTO;
 import br.unitins.projeto.dto.orgao.OrgaoResponseDTO;
+import br.unitins.projeto.dto.usuario.OrgaoPerfilDTO;
+import br.unitins.projeto.dto.usuario.OrgaoPerfilResponseDTO;
 import br.unitins.projeto.dto.usuario.UsuarioDTO;
 import br.unitins.projeto.dto.usuario.UsuarioResponseDTO;
 import br.unitins.projeto.model.Orgao;
 import br.unitins.projeto.model.OrgaoPerfil;
 import br.unitins.projeto.model.Perfil;
 import br.unitins.projeto.model.Usuario;
+import br.unitins.projeto.repository.OrgaoPerfilRepository;
 import br.unitins.projeto.repository.OrgaoRepository;
 import br.unitins.projeto.repository.UsuarioRepository;
 import br.unitins.projeto.service.hash.HashService;
@@ -33,6 +36,9 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Inject
     OrgaoRepository orgaoRepository;
+
+    @Inject
+    OrgaoPerfilRepository orgaoPerfilRepository;
 
     @Inject
     Validator validator;
@@ -61,19 +67,20 @@ public class UsuarioServiceImpl implements UsuarioService {
     public UsuarioResponseDTO create(UsuarioDTO usuarioDTO) throws ConstraintViolationException {
         validar(usuarioDTO);
 
-        OrgaoPerfil orgaoPerfil = new OrgaoPerfil();
-        orgaoPerfil.setOrgao(orgaoRepository.findById(usuarioDTO.orgaoPerfil().idOrgao()));
-        orgaoPerfil.setPerfil(Perfil.valueOf(usuarioDTO.orgaoPerfil().idPerfil()));
-
         Usuario entity = new Usuario();
         entity.setNome(usuarioDTO.nome());
         entity.setCpf(usuarioDTO.cpf());
         entity.setLogin(usuarioDTO.login());
         entity.setSenha(hashService.getHashSenha(usuarioDTO.senha()));
         entity.setNivelSigilo(usuarioDTO.nivelSigilo());
-        entity.setOrgaoPerfil(new ArrayList<>(Arrays.asList(orgaoPerfil)));
         entity.setAtivo(true);
         repository.persist(entity);
+
+        OrgaoPerfil orgaoPerfil = new OrgaoPerfil();
+        orgaoPerfil.setOrgao(orgaoRepository.findById(usuarioDTO.orgaoPerfil().idOrgao()));
+        orgaoPerfil.setPerfil(Perfil.valueOf(usuarioDTO.orgaoPerfil().idPerfil()));
+        orgaoPerfil.setUsuario(entity);
+        orgaoPerfilRepository.persist(orgaoPerfil);
 
         return new UsuarioResponseDTO(entity);
     }
@@ -83,10 +90,6 @@ public class UsuarioServiceImpl implements UsuarioService {
     public UsuarioResponseDTO update(Long id, UsuarioDTO usuarioDTO) throws ConstraintViolationException {
         validar(usuarioDTO);
 
-        OrgaoPerfil orgaoPerfil = new OrgaoPerfil();
-        orgaoPerfil.setOrgao(orgaoRepository.findById(usuarioDTO.orgaoPerfil().idOrgao()));
-        orgaoPerfil.setPerfil(Perfil.valueOf(usuarioDTO.orgaoPerfil().idPerfil()));
-
         Usuario entity = repository.findById(id);
 
         entity.setNome(usuarioDTO.nome());
@@ -94,7 +97,21 @@ public class UsuarioServiceImpl implements UsuarioService {
         entity.setLogin(usuarioDTO.login());
         entity.setSenha(hashService.getHashSenha(usuarioDTO.senha()));
         entity.setNivelSigilo(usuarioDTO.nivelSigilo());
-        entity.setOrgaoPerfil(new ArrayList<>(Arrays.asList(orgaoPerfil)));
+
+        return new UsuarioResponseDTO(entity);
+    }
+
+    @Override
+    @Transactional
+    public UsuarioResponseDTO adicionarUsuario(Long id, OrgaoPerfilDTO orgaoPerfilDTO) throws ConstraintViolationException {
+
+        Usuario entity = repository.findById(id);
+
+        OrgaoPerfil orgaoPerfil = new OrgaoPerfil();
+        orgaoPerfil.setOrgao(orgaoRepository.findById(orgaoPerfilDTO.idOrgao()));
+        orgaoPerfil.setPerfil(Perfil.valueOf(orgaoPerfilDTO.idPerfil()));
+        orgaoPerfil.setUsuario(entity);
+        orgaoPerfilRepository.persist(orgaoPerfil);
 
         return new UsuarioResponseDTO(entity);
     }
@@ -104,6 +121,10 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         if (!violations.isEmpty())
             throw new ConstraintViolationException(violations);
+    }
+
+    public List<OrgaoPerfilResponseDTO> getLotacoesUsuario(Long id) {
+        return orgaoPerfilRepository.findByUsuario(id).stream().map(OrgaoPerfilResponseDTO::new).collect(Collectors.toList());
     }
 
     @Override
