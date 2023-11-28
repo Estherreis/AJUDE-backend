@@ -4,6 +4,7 @@ import br.unitins.projeto.application.Result;
 import br.unitins.projeto.dto.municipio.MunicipioDTO;
 import br.unitins.projeto.dto.municipio.MunicipioResponseDTO;
 import br.unitins.projeto.service.municipio.MunicipioService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.Consumes;
@@ -32,6 +33,7 @@ public class MunicipioResource {
     private static final Logger LOG = Logger.getLogger(MunicipioResource.class);
 
     @GET
+    @RolesAllowed({"Administrador", "Assistente"})
     public List<MunicipioResponseDTO> getAll() {
         LOG.info("Buscando todos os municipios.");
         return service.getAll();
@@ -39,13 +41,14 @@ public class MunicipioResource {
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({"Administrador", "Assistente"})
     public MunicipioResponseDTO findById(@PathParam("id") Long id) {
         LOG.info("Buscando um município pelo id.");
         return service.findById(id);
     }
 
     @POST
-//    @RolesAllowed({"Admin"})
+    @RolesAllowed({"Administrador", "Assistente"})
     public Response insert(MunicipioDTO dto) {
         LOG.infof("Inserindo um municipio: %s", dto.descricao());
         Result result = null;
@@ -68,7 +71,7 @@ public class MunicipioResource {
 
     @PUT
     @Path("/{id}")
-//    @RolesAllowed({"Admin"})
+    @RolesAllowed({"Administrador", "Assistente"})
     public Response update(@PathParam("id") Long id, MunicipioDTO dto) {
         LOG.infof("Alterando um municipio: %s", dto.descricao());
         Result result = null;
@@ -91,7 +94,7 @@ public class MunicipioResource {
 
     @DELETE
     @Path("/{id}")
-//    @RolesAllowed({"Admin"})
+    @RolesAllowed({"Administrador", "Assistente"})
     public Response delete(@PathParam("id") Long id) {
         LOG.infof("Deletando um municipio: %s", id);
         Result result = null;
@@ -114,6 +117,7 @@ public class MunicipioResource {
 
     @GET
     @Path("/search/{descricao}")
+    @RolesAllowed({"Administrador", "Assistente"})
     public Response search(@PathParam("descricao") String descricao) {
         LOG.infof("Pesquisando municípios pelo nome: %s", descricao);
         Result result = null;

@@ -1,5 +1,8 @@
 package br.unitins.projeto.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum Perfil {
     ADMINISTRADOR (1, "Administrador"),
     ASSISTENTE (2, "Assistente");

@@ -19,6 +19,7 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.NotFoundException;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 
 @ApplicationScoped
 public class BeneficiarioServiceImpl implements BeneficiarioService{
@@ -40,7 +41,6 @@ public class BeneficiarioServiceImpl implements BeneficiarioService{
 
     @Override
     public List<BeneficiarioResponseDTO> getAll() {
-
         List<Beneficiario> list = beneficiarioRepository.listAll();
         return list.stream().map(BeneficiarioResponseDTO::new).collect(Collectors.toList());
 

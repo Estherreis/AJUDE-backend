@@ -136,4 +136,14 @@ public class UsuarioServiceImpl implements UsuarioService {
         return new UsuarioResponseDTO(entity);
     }
 
+    @Override
+    public Usuario findByLoginAndSenha(String login, String senha) {
+        return repository.findByLoginAndSenha(login, senha);
+    }
+
+    @Override
+    public Usuario findByLogin(String login) {
+        return repository.findByLogin(login);
+    }
+
 }

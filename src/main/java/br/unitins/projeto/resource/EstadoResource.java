@@ -4,6 +4,7 @@ import br.unitins.projeto.application.Result;
 import br.unitins.projeto.dto.estado.EstadoDTO;
 import br.unitins.projeto.dto.estado.EstadoResponseDTO;
 import br.unitins.projeto.service.estado.EstadoService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.Consumes;
@@ -32,6 +33,7 @@ public class EstadoResource {
     private static final Logger LOG = Logger.getLogger(EstadoResource.class);
 
     @GET
+    @RolesAllowed({"Administrador", "Assistente"})
     public List<EstadoResponseDTO> getAll() {
         LOG.info("Buscando todos os estados.");
         return service.getAll();
@@ -39,13 +41,14 @@ public class EstadoResource {
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({"Administrador", "Assistente"})
     public EstadoResponseDTO findById(@PathParam("id") Long id) {
         LOG.info("Buscando um estados pelo id.");
         return service.findById(id);
     }
 
     @POST
-//    @RolesAllowed({"Admin"})
+    @RolesAllowed({"Administrador", "Assistente"})
     public Response insert(EstadoDTO dto) {
         LOG.infof("Inserindo um estados: %s", dto.descricao());
         Result result = null;
@@ -68,7 +71,7 @@ public class EstadoResource {
 
     @PUT
     @Path("/{id}")
-//    @RolesAllowed({"Admin"})
+    @RolesAllowed({"Administrador", "Assistente"})
     public Response update(@PathParam("id") Long id, EstadoDTO dto) {
         LOG.infof("Alterando um estados: %s", dto.descricao());
         Result result = null;
@@ -91,7 +94,7 @@ public class EstadoResource {
 
     @DELETE
     @Path("/{id}")
-//    @RolesAllowed({"Admin"})
+    @RolesAllowed({"Administrador", "Assistente"})
     public Response delete(@PathParam("id") Long id) {
         LOG.infof("Deletando um estados: %s", id);
         Result result = null;
@@ -114,6 +117,7 @@ public class EstadoResource {
 
     @GET
     @Path("/search/{sigla}")
+    @RolesAllowed({"Administrador", "Assistente"})
     public Response search(@PathParam("sigla") String sigla) {
         LOG.infof("Pesquisando estados pelo nome: %s", sigla);
         Result result = null;

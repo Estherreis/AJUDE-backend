@@ -5,6 +5,8 @@ import br.unitins.projeto.dto.usuario.OrgaoPerfilResponseDTO;
 import br.unitins.projeto.dto.usuario.UsuarioDTO;
 import br.unitins.projeto.dto.usuario.UsuarioResponseDTO;
 import br.unitins.projeto.service.usuario.UsuarioService;
+import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.Consumes;
@@ -31,6 +33,7 @@ public class UsuarioResource {
     private static final Logger LOG = Logger.getLogger(UsuarioResource.class);
 
     @GET
+    @RolesAllowed({"Administrador", "Assistente"})
     public List<UsuarioResponseDTO> getAll() {
         LOG.info("Buscando todos os usuários.");
         return service.getAll();
@@ -38,20 +41,14 @@ public class UsuarioResource {
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({"Administrador", "Assistente"})
     public UsuarioResponseDTO findById(@PathParam("id") Long id) {
         LOG.info("Buscando um usuário pelo id.");
         return service.findById(id);
     }
 
-    @GET
-    @Path("/{id}/lotacoes")
-    public List<OrgaoPerfilResponseDTO> findLotacoes(@PathParam("id") Long id) {
-        LOG.info("Buscando as lotações de um usuário.");
-        return service.getLotacoesUsuario(id);
-    }
-
     @POST
-//    @RolesAllowed({"Admin"})
+    @PermitAll
     public Response insert(UsuarioDTO dto) {
         LOG.infof("Inserindo um usuário: %s", dto.nome());
         Result result = null;
@@ -74,7 +71,7 @@ public class UsuarioResource {
 
     @PUT
     @Path("/{id}")
-//    @RolesAllowed({"Admin"})
+    @RolesAllowed({"Administrador", "Assistente"})
     public Response update(@PathParam("id") Long id, UsuarioDTO dto) {
         LOG.infof("Alterando um usuário: %s", dto.nome());
         Result result = null;
@@ -97,7 +94,7 @@ public class UsuarioResource {
 
     @PUT
     @Path("/situacao/{id}")
-//    @RolesAllowed({"Admin"})
+    @RolesAllowed({"Administrador", "Assistente"})
     public Response alterarSituacao(@PathParam("id") Long id, Boolean situacao) {
         LOG.infof("Alterando situação do usuário");
         Result result = null;

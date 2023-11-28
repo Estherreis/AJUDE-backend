@@ -4,6 +4,7 @@ import br.unitins.projeto.application.Result;
 import br.unitins.projeto.dto.orgao.OrgaoDTO;
 import br.unitins.projeto.dto.orgao.OrgaoResponseDTO;
 import br.unitins.projeto.service.orgao.OrgaoService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.Consumes;
@@ -31,6 +32,7 @@ public class OrgaoResource {
     private static final Logger LOG = Logger.getLogger(OrgaoResource.class);
 
     @GET
+    @RolesAllowed({"Administrador", "Assistente"})
     public List<OrgaoResponseDTO> getAll() {
         LOG.info("Buscando todos os órgãos.");
         return service.getAll();
@@ -38,13 +40,14 @@ public class OrgaoResource {
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({"Administrador", "Assistente"})
     public OrgaoResponseDTO findById(@PathParam("id") Long id) {
         LOG.info("Buscando um órgão pelo id.");
         return service.findById(id);
     }
 
     @POST
-//    @RolesAllowed({"Admin"})
+    @RolesAllowed({"Administrador", "Assistente"})
     public Response insert(OrgaoDTO dto) {
         LOG.infof("Inserindo um órgão: %s", dto.nome());
         Result result = null;
@@ -67,7 +70,7 @@ public class OrgaoResource {
 
     @PUT
     @Path("/{id}")
-//    @RolesAllowed({"Admin"})
+    @RolesAllowed({"Administrador", "Assistente"})
     public Response update(@PathParam("id") Long id, OrgaoDTO dto) {
         LOG.infof("Alterando um órgão: %s", dto.nome());
         Result result = null;
@@ -90,7 +93,7 @@ public class OrgaoResource {
 
     @DELETE
     @Path("/{id}")
-//    @RolesAllowed({"Admin"})
+    @RolesAllowed({"Administrador", "Assistente"})
     public Response delete(@PathParam("id") Long id) {
         LOG.infof("Deletando um órgão: %s", id);
         Result result = null;
@@ -113,7 +116,7 @@ public class OrgaoResource {
 
     @PUT
     @Path("/situacao/{id}")
-//    @RolesAllowed({"Admin"})
+    @RolesAllowed({"Administrador", "Assistente"})
     public Response alterarSituacao(@PathParam("id") Long id, Boolean situacao) {
         LOG.infof("Alterando situação do órgão");
         Result result = null;

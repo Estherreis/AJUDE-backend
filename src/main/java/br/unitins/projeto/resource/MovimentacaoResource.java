@@ -3,6 +3,7 @@ package br.unitins.projeto.resource;
 import java.io.IOException;
 import java.util.List;
 
+import jakarta.annotation.security.RolesAllowed;
 import org.jboss.logging.Logger;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
@@ -30,7 +31,6 @@ import jakarta.ws.rs.core.Response.Status;
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
 public class MovimentacaoResource {
-    
 
     private static final Logger LOG = Logger.getLogger(MovimentacaoResource.class);
 
@@ -41,6 +41,7 @@ public class MovimentacaoResource {
     FileService fileService;
 
     @POST
+    @RolesAllowed({"Administrador", "Assistente"})
     public Response insert(MovimentacaoDTO dto) {
         LOG.infof("Inserindo um movimentacaos: %s", dto.descricao());
         Result result = null;
@@ -63,6 +64,7 @@ public class MovimentacaoResource {
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({"Administrador", "Assistente"})
     public List<MovimentacaoResponseDTO> findById(@PathParam("id") Long id) {
 
         LOG.info("Buscando movimentações pelo id do atendimento.");
@@ -72,7 +74,8 @@ public class MovimentacaoResource {
     @GET
     @Path("/document/download/{nomeDocumento}")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    public Response download(@PathParam("nomeDocuimento") String nomeDocumento) {
+    @RolesAllowed({"Administrador", "Assistente"})
+    public Response download(@PathParam("nomeDocumento") String nomeDocumento) {
         ResponseBuilder response = Response.ok(fileService.download(nomeDocumento));
         response.header("Content-Disposition", "attachment;filename=" + nomeDocumento);
         return response.build();
@@ -81,6 +84,7 @@ public class MovimentacaoResource {
     @PATCH
     @Path("/documento/upload")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
+    @RolesAllowed({"Administrador", "Assistente"})
     public Response salvarImagem(@MultipartForm DocumentoForm form) {
 
         try {

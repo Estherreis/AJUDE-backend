@@ -15,6 +15,7 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.NotFoundException;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -38,6 +39,8 @@ public class AtendimentoServiceImpl implements AtendimentoService {
 
     @Inject
     Validator validator;
+
+    JsonWebToken jwt;
 
     @Override
     public List<AtendimentoResponseDTO> getAll() {

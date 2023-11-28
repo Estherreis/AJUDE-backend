@@ -4,6 +4,7 @@ import br.unitins.projeto.application.Result;
 import br.unitins.projeto.dto.encaminhamento.EncaminhamentoDTO;
 import br.unitins.projeto.dto.encaminhamento.EncaminhamentoResponseDTO;
 import br.unitins.projeto.service.encaminhamento.EncaminhamentoService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.Consumes;
@@ -30,6 +31,7 @@ public class EncaminhamentoResource {
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({"Administrador", "Assistente"})
     public EncaminhamentoResponseDTO findById(@PathParam("id") Long id) {
         LOG.info("Buscando um atendimento pelo id.");
         return service.findById(id);
@@ -37,13 +39,14 @@ public class EncaminhamentoResource {
 
     @GET
     @Path("/{idAtendimento}")
+    @RolesAllowed({"Administrador", "Assistente"})
     public List<EncaminhamentoResponseDTO> findByAtendimento(@PathParam("idAtendimento") Long idAtendimento) {
         LOG.info("Buscando os encaminhamentos de um atendimento.");
         return service.findByAtendimento(idAtendimento);
     }
 
     @POST
-//    @RolesAllowed({"Admin"})
+    @RolesAllowed({"Administrador", "Assistente"})
     public Response insert(EncaminhamentoDTO dto) {
         LOG.infof("Inserindo um encaminhamento: %s", dto.motivo());
         Result result = null;

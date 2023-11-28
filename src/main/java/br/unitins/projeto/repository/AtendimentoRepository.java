@@ -13,7 +13,7 @@ public class AtendimentoRepository implements PanacheRepository<Atendimento> {
     public List<Atendimento> findByBeneficiario(Long idBeneficiario){
         if (idBeneficiario == null)
             return null;
-        return find("beneficiario.id = ?1 ", idBeneficiario).list();
+        return find("beneficiario.id = ?1", idBeneficiario).list();
     }
 
 }

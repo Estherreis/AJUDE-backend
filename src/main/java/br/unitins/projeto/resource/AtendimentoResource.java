@@ -8,6 +8,7 @@ import br.unitins.projeto.dto.estado.EstadoResponseDTO;
 import br.unitins.projeto.dto.orgao.OrgaoResponseDTO;
 import br.unitins.projeto.service.atendimento.AtendimentoService;
 import br.unitins.projeto.service.estado.EstadoService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.Consumes;
@@ -36,20 +37,22 @@ public class AtendimentoResource {
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({"Administrador", "Assistente"})
     public AtendimentoResponseDTO findById(@PathParam("id") Long id) {
         LOG.info("Buscando um atendimento pelo id.");
         return service.findById(id);
     }
 
     @GET
-    @Path("/{idBeneficiario}")
+    @Path("/beneficiario/{idBeneficiario}")
+    @RolesAllowed({"Administrador", "Assistente"})
     public List<AtendimentoResponseDTO> findByBeneficiario(@PathParam("idBeneficiario") Long idBeneficiario) {
         LOG.info("Buscando os atendimentos de um beneficiário.");
         return service.findByBeneficiario(idBeneficiario);
     }
 
     @POST
-//    @RolesAllowed({"Admin"})
+    @RolesAllowed({"Administrador", "Assistente"})
     public Response insert(AtendimentoDTO dto) {
         LOG.infof("Inserindo um atendimento: %s", dto.descricao());
         Result result = null;
@@ -72,7 +75,7 @@ public class AtendimentoResource {
 
     @PUT
     @Path("/situacao/{id}")
-//    @RolesAllowed({"Admin"})
+    @RolesAllowed({"Administrador", "Assistente"})
     public Response finalizarAtendimento(@PathParam("id") Long id) {
         LOG.infof("Alterando situação do órgão");
         Result result = null;
