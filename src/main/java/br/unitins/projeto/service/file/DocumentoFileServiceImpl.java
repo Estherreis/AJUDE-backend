@@ -44,9 +44,9 @@ public class DocumentoFileServiceImpl implements FileService {
 
         // verificando o tipo da imagem
         String mimeType = Files.probeContentType(new File(nomeDocumento).toPath());
-        List<String> listMimeType = Arrays.asList("document/pdf");
+        List<String> listMimeType = Arrays.asList("application/pdf");
         if (!listMimeType.contains(mimeType)) {
-                throw new IOException("Tipo de imagem não suportada.");
+                throw new IOException("Tipo de documento não suportada.");
         }
 
         if (documento.length > (1024 * 1024 * 10))
@@ -76,7 +76,6 @@ public class DocumentoFileServiceImpl implements FileService {
         return nomeArquivo;
     
     }
-
 
     @Override
     public File download(String nomeArquivo) {

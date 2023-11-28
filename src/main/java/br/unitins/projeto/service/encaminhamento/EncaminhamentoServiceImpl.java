@@ -5,10 +5,11 @@ import br.unitins.projeto.dto.encaminhamento.EncaminhamentoResponseDTO;
 import br.unitins.projeto.model.Atendimento;
 import br.unitins.projeto.model.Encaminhamento;
 import br.unitins.projeto.model.Orgao;
-import br.unitins.projeto.model.SituacaoAtendimento;
+import br.unitins.projeto.model.Usuario;
 import br.unitins.projeto.repository.AtendimentoRepository;
 import br.unitins.projeto.repository.EncaminhamentoRepository;
 import br.unitins.projeto.repository.OrgaoRepository;
+import br.unitins.projeto.repository.UsuarioRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -33,6 +34,9 @@ public class EncaminhamentoServiceImpl implements EncaminhamentoService {
 
     @Inject
     AtendimentoRepository atendimentoRepository;
+
+    @Inject
+    UsuarioRepository usuarioRepository;
 
     @Inject
     Validator validator;
@@ -61,10 +65,12 @@ public class EncaminhamentoServiceImpl implements EncaminhamentoService {
         Encaminhamento entity = new Encaminhamento();
         Atendimento atendimento = atendimentoRepository.findById(encaminhamentoDTO.idAtendimento());
         Orgao orgaoDestino = orgaoRepository.findById(encaminhamentoDTO.idOrgao());
+        Usuario usuario = usuarioRepository.findById(encaminhamentoDTO.idUsuario());
 
         entity.setOrgaoAtual(atendimento.getOrgao());
         entity.setOrgaoDestino(orgaoDestino);
         entity.setAtendimento(atendimento);
+        entity.setUsuarioInclusao(usuario);
         entity.setDataInclusao(LocalDateTime.now());
         entity.setMotivo(encaminhamentoDTO.motivo());
 

@@ -43,6 +43,7 @@ public class MovimentacaoResource {
     @POST
     public Response insert(MovimentacaoDTO dto) {
         LOG.infof("Inserindo um movimentacaos: %s", dto.descricao());
+        System.out.println("TESTE TESTE");
         Result result = null;
 
         try {
@@ -72,7 +73,7 @@ public class MovimentacaoResource {
     @GET
     @Path("/document/download/{nomeDocumento}")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    public Response download(@PathParam("nomeDocuimento") String nomeDocumento) {
+    public Response download(@PathParam("nomeDocumento") String nomeDocumento) {
         ResponseBuilder response = Response.ok(fileService.download(nomeDocumento));
         response.header("Content-Disposition", "attachment;filename=" + nomeDocumento);
         return response.build();
