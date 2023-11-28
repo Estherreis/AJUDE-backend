@@ -4,8 +4,10 @@ package br.unitins.projeto.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.PrimaryKeyJoinColumn;
 
 @Entity
+@PrimaryKeyJoinColumn(name = "id")
 public class Movimentacao extends DefaultEntity{
     
     private String tituloMovimentacao;
@@ -20,7 +22,16 @@ public class Movimentacao extends DefaultEntity{
     //data inclusão já está no default entity
 
     @ManyToOne
-    private Atendimento Atendimento;
+    @JoinColumn(name = "id_atendimento", nullable = false)
+    private Atendimento atendimento;
+
+    public Atendimento getAtendimento() {
+        return atendimento;
+    }
+
+    public void setAtendimento(Atendimento atendimento) {
+        this.atendimento = atendimento;
+    }
 
     public String getDescricao() {
         return descricao;
@@ -47,13 +58,6 @@ public class Movimentacao extends DefaultEntity{
         this.usuarioAutor = usuarioAutor;
     }
 
-    public Atendimento getAtendimento() {
-        return Atendimento;
-    }
-
-    public void setAtendimento(Atendimento atendimento) {
-        Atendimento = atendimento;
-    }
 
         public String getTituloMovimentacao() {
         return tituloMovimentacao;

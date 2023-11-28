@@ -9,7 +9,10 @@ import jakarta.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class MovimentacaoRepository implements PanacheRepository<Movimentacao> {
     
-    public List<Movimentacao> findByAtendimento(Long idAtendimento) {
-        return find("atendimento.id = ?1", idAtendimento).list();
+    public List<Movimentacao> findByAtendimento(Long idAtendimento){
+        if (idAtendimento == null)
+            return null;
+        return find("atendimento.id = ?1 ", idAtendimento).list();
     }
 }
+

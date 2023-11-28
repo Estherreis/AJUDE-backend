@@ -12,6 +12,7 @@ import br.unitins.projeto.repository.MovimentacaoRepository;
 import br.unitins.projeto.repository.UsuarioRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 
 @ApplicationScoped
 public class MovimentacaoServiceImpl implements MovimentacaoService{
@@ -28,10 +29,10 @@ public class MovimentacaoServiceImpl implements MovimentacaoService{
     
 
     @Override
+    @Transactional
     public MovimentacaoResponseDTO lancarMovimentacao(MovimentacaoDTO movimentacaoDTO) {
 
         Movimentacao entity = new Movimentacao();
-
         LocalDateTime now = LocalDateTime.now();
 
         entity.setTituloMovimentacao(movimentacaoDTO.tituloMovimentacao());
