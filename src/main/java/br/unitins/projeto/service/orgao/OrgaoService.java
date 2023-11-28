@@ -1,8 +1,5 @@
 package br.unitins.projeto.service.orgao;
 
-import br.unitins.projeto.dto.municipio.MunicipioDTO;
-import br.unitins.projeto.dto.municipio.MunicipioResponseDTO;
-
 import java.util.List;
 
 import br.unitins.projeto.dto.orgao.OrgaoDTO;

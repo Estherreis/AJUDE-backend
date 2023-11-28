@@ -2,6 +2,7 @@ package br.unitins.projeto.resource;
 
 import java.util.List;
 
+import jakarta.annotation.security.RolesAllowed;
 import org.jboss.logging.Logger;
 
 import br.unitins.projeto.application.Result;
@@ -34,6 +35,7 @@ public class BeneficiarioResource {
     private static final Logger LOG = Logger.getLogger(BeneficiarioResource.class);
 
     @GET
+    @RolesAllowed({"Administrador", "Assistente"})
     public List<BeneficiarioResponseDTO> getAll() {
         LOG.info("Buscando todos os beneficiarios.");
         return service.getAll();
@@ -41,13 +43,14 @@ public class BeneficiarioResource {
 
     @GET
     @Path("/{id}")
+    @RolesAllowed({"Administrador", "Assistente"})
     public BeneficiarioResponseDTO findById(@PathParam("id") Long id) {
         LOG.info("Buscando um beneficiarios pelo id.");
         return service.findById(id);
     }
 
     @POST
-//    @RolesAllowed({"Admin"})
+    @RolesAllowed({"Administrador", "Assistente"})
     public Response insert(BeneficiarioDTO dto) {
         LOG.infof("Inserindo um beneficiarios: %s", dto.nome());
         Result result = null;
@@ -70,7 +73,7 @@ public class BeneficiarioResource {
 
     @PUT
     @Path("/{id}")
-//    @RolesAllowed({"Admin"})
+    @RolesAllowed({"Administrador", "Assistente"})
     public Response update(@PathParam("id") Long id, BeneficiarioDTO dto) {
         LOG.infof("Alterando um beneficiarios: %s", dto.nome());
         Result result = null;
@@ -93,7 +96,7 @@ public class BeneficiarioResource {
 
     @DELETE
     @Path("/{id}")
-//    @RolesAllowed({"Admin"})
+    @RolesAllowed({"Administrador", "Assistente"})
     public Response delete(@PathParam("id") Long id) {
         LOG.infof("Deletando um beneficiarios: %s", id);
         Result result = null;
@@ -116,6 +119,7 @@ public class BeneficiarioResource {
 
     @GET
     @Path("/search/{nome}")
+    @RolesAllowed({"Administrador", "Assistente"})
     public Response search(@PathParam("nome") String nome) {
         LOG.infof("Pesquisando beneficiarios pelo nome: %s", nome);
         Result result = null;
@@ -138,6 +142,7 @@ public class BeneficiarioResource {
 
     @GET
     @Path("/search/{cpf}")
+    @RolesAllowed({"Administrador", "Assistente"})
     public Response searchCpf(@PathParam("cpf") String cpf) {
         LOG.infof("Pesquisando beneficiarios pelo nome: %s", cpf);
         Result result = null;
