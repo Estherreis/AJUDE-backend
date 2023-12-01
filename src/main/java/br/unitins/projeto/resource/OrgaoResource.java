@@ -4,17 +4,18 @@ import br.unitins.projeto.application.Result;
 import br.unitins.projeto.dto.orgao.OrgaoDTO;
 import br.unitins.projeto.dto.orgao.OrgaoResponseDTO;
 import br.unitins.projeto.service.orgao.OrgaoService;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.jboss.logging.Logger;
@@ -32,22 +33,32 @@ public class OrgaoResource {
     private static final Logger LOG = Logger.getLogger(OrgaoResource.class);
 
     @GET
-    @RolesAllowed({"Administrador", "Assistente"})
+    @Path("/all")
     public List<OrgaoResponseDTO> getAll() {
         LOG.info("Buscando todos os órgãos.");
         return service.getAll();
     }
 
     @GET
+    public List<OrgaoResponseDTO> getAll(
+            @QueryParam("page") @DefaultValue("0") int page,
+            @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+
+
+        LOG.info("Buscando todos os órgãos com paginação.");
+        LOG.debug("ERRO DE DEBUG.");
+        return service.getAll(page, pageSize);
+    }
+
+
+    @GET
     @Path("/{id}")
-    @RolesAllowed({"Administrador", "Assistente"})
     public OrgaoResponseDTO findById(@PathParam("id") Long id) {
         LOG.info("Buscando um órgão pelo id.");
         return service.findById(id);
     }
 
     @POST
-    @RolesAllowed({"Administrador", "Assistente"})
     public Response insert(OrgaoDTO dto) {
         LOG.infof("Inserindo um órgão: %s", dto.nome());
         Result result = null;
@@ -70,7 +81,6 @@ public class OrgaoResource {
 
     @PUT
     @Path("/{id}")
-    @RolesAllowed({"Administrador", "Assistente"})
     public Response update(@PathParam("id") Long id, OrgaoDTO dto) {
         LOG.infof("Alterando um órgão: %s", dto.nome());
         Result result = null;
@@ -93,7 +103,6 @@ public class OrgaoResource {
 
     @DELETE
     @Path("/{id}")
-    @RolesAllowed({"Administrador", "Assistente"})
     public Response delete(@PathParam("id") Long id) {
         LOG.infof("Deletando um órgão: %s", id);
         Result result = null;
@@ -116,7 +125,6 @@ public class OrgaoResource {
 
     @PUT
     @Path("/situacao/{id}")
-    @RolesAllowed({"Administrador", "Assistente"})
     public Response alterarSituacao(@PathParam("id") Long id, Boolean situacao) {
         LOG.infof("Alterando situação do órgão");
         Result result = null;
@@ -135,6 +143,12 @@ public class OrgaoResource {
         }
 
         return Response.status(Response.Status.NOT_FOUND).entity(result).build();
+    }
+
+    @GET
+    @Path("/count")
+    public Long count() {
+        return service.count();
     }
 
 }

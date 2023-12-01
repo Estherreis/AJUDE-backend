@@ -36,6 +36,12 @@ public class OrgaoServiceImpl implements OrgaoService {
     }
 
     @Override
+    public List<OrgaoResponseDTO> getAll(int page, int pageSize) {
+        List<Orgao> list = repository.findAll().page(page, pageSize).list();
+        return list.stream().map(e -> new OrgaoResponseDTO(e)).collect(Collectors.toList());
+    }
+
+    @Override
     public OrgaoResponseDTO findById(Long id) {
         Orgao orgao = repository.findById(id);
 

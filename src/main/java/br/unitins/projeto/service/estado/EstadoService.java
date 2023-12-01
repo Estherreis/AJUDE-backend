@@ -9,6 +9,8 @@ public interface EstadoService {
 
     List<EstadoResponseDTO> getAll();
 
+    List<EstadoResponseDTO> getAll(int page, int pageSize);
+
     EstadoResponseDTO findById(Long id);
 
     EstadoResponseDTO create(EstadoDTO productDTO);

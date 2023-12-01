@@ -1,13 +1,15 @@
 package br.unitins.projeto.service.orgao;
 
-import java.util.List;
-
 import br.unitins.projeto.dto.orgao.OrgaoDTO;
 import br.unitins.projeto.dto.orgao.OrgaoResponseDTO;
+
+import java.util.List;
 
 public interface OrgaoService {
 
     List<OrgaoResponseDTO> getAll();
+
+    List<OrgaoResponseDTO> getAll(int page, int pageSize);
 
     OrgaoResponseDTO findById(Long id);
 

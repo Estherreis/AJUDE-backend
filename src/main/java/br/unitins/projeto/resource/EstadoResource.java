@@ -9,12 +9,14 @@ import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
@@ -33,22 +35,34 @@ public class EstadoResource {
     private static final Logger LOG = Logger.getLogger(EstadoResource.class);
 
     @GET
-    @RolesAllowed({"Administrador", "Assistente"})
-    public List<EstadoResponseDTO> getAll() {
+    // //@RolesAllowed({"Administrador", "Assistente"})
+    public List<EstadoResponseDTO> getAll(
+            @QueryParam("page") @DefaultValue("0") int page,
+            @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+
         LOG.info("Buscando todos os estados.");
+        LOG.debug("ERRO DE DEBUG.");
+        return service.getAll(page, pageSize);
+    }
+
+    @GET
+    @Path(("/all"))
+    // //@RolesAllowed({"Administrador", "Assistente"})
+    public List<EstadoResponseDTO> getAll() {
+        LOG.info("Buscando todos os estados com paginação.");
         return service.getAll();
     }
 
     @GET
     @Path("/{id}")
-    @RolesAllowed({"Administrador", "Assistente"})
+    //// @RolesAllowed({ "Administrador", "Assistente" })
     public EstadoResponseDTO findById(@PathParam("id") Long id) {
         LOG.info("Buscando um estados pelo id.");
         return service.findById(id);
     }
 
     @POST
-    @RolesAllowed({"Administrador", "Assistente"})
+    // @RolesAllowed({ "Administrador", "Assistente" })
     public Response insert(EstadoDTO dto) {
         LOG.infof("Inserindo um estados: %s", dto.descricao());
         Result result = null;
@@ -71,7 +85,7 @@ public class EstadoResource {
 
     @PUT
     @Path("/{id}")
-    @RolesAllowed({"Administrador", "Assistente"})
+    // @RolesAllowed({ "Administrador", "Assistente" })
     public Response update(@PathParam("id") Long id, EstadoDTO dto) {
         LOG.infof("Alterando um estados: %s", dto.descricao());
         Result result = null;
@@ -94,7 +108,7 @@ public class EstadoResource {
 
     @DELETE
     @Path("/{id}")
-    @RolesAllowed({"Administrador", "Assistente"})
+    // @RolesAllowed({ "Administrador", "Assistente" })
     public Response delete(@PathParam("id") Long id) {
         LOG.infof("Deletando um estados: %s", id);
         Result result = null;
@@ -117,7 +131,7 @@ public class EstadoResource {
 
     @GET
     @Path("/search/{sigla}")
-    @RolesAllowed({"Administrador", "Assistente"})
+    // @RolesAllowed({ "Administrador", "Assistente" })
     public Response search(@PathParam("sigla") String sigla) {
         LOG.infof("Pesquisando estados pelo nome: %s", sigla);
         Result result = null;
@@ -139,4 +153,3 @@ public class EstadoResource {
     }
 
 }
-

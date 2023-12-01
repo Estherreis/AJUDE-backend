@@ -1,9 +1,10 @@
 package br.unitins.projeto.service.municipio;
 
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
+import br.unitins.projeto.dto.municipio.MunicipioDTO;
+import br.unitins.projeto.dto.municipio.MunicipioResponseDTO;
+import br.unitins.projeto.model.Municipio;
+import br.unitins.projeto.repository.EstadoRepository;
+import br.unitins.projeto.repository.MunicipioRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -12,11 +13,9 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.NotFoundException;
 
-import br.unitins.projeto.dto.municipio.MunicipioDTO;
-import br.unitins.projeto.dto.municipio.MunicipioResponseDTO;
-import br.unitins.projeto.model.Municipio;
-import br.unitins.projeto.repository.EstadoRepository;
-import br.unitins.projeto.repository.MunicipioRepository;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class MunicipioServiceImpl implements MunicipioService {
@@ -34,6 +33,12 @@ public class MunicipioServiceImpl implements MunicipioService {
     public List<MunicipioResponseDTO> getAll() {
         List<Municipio> list = repository.listAll();
         return list.stream().map(MunicipioResponseDTO::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<MunicipioResponseDTO> getAll(int page, int pageSize) {
+        List<Municipio> list = repository.findAll().page(page, pageSize).list();
+        return list.stream().map(e -> new MunicipioResponseDTO(e)).collect(Collectors.toList());
     }
 
     @Override

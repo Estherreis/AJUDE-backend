@@ -9,12 +9,14 @@ import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
@@ -33,22 +35,35 @@ public class MunicipioResource {
     private static final Logger LOG = Logger.getLogger(MunicipioResource.class);
 
     @GET
-    @RolesAllowed({"Administrador", "Assistente"})
+    @Path("/all")
+    //@RolesAllowed({"Administrador", "Assistente"})
     public List<MunicipioResponseDTO> getAll() {
         LOG.info("Buscando todos os municipios.");
         return service.getAll();
     }
 
     @GET
+    //@RolesAllowed({"Administrador", "Assistente"})
+    public List<MunicipioResponseDTO> getAll(
+            @QueryParam("page") @DefaultValue("0") int page,
+            @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+
+
+        LOG.info("Buscando todos os municípios com paginação.");
+        LOG.debug("ERRO DE DEBUG.");
+        return service.getAll(page, pageSize);
+    }
+
+    @GET
     @Path("/{id}")
-    @RolesAllowed({"Administrador", "Assistente"})
+    //@RolesAllowed({"Administrador", "Assistente"})
     public MunicipioResponseDTO findById(@PathParam("id") Long id) {
         LOG.info("Buscando um município pelo id.");
         return service.findById(id);
     }
 
     @POST
-    @RolesAllowed({"Administrador", "Assistente"})
+    //@RolesAllowed({"Administrador", "Assistente"})
     public Response insert(MunicipioDTO dto) {
         LOG.infof("Inserindo um municipio: %s", dto.descricao());
         Result result = null;
@@ -71,7 +86,7 @@ public class MunicipioResource {
 
     @PUT
     @Path("/{id}")
-    @RolesAllowed({"Administrador", "Assistente"})
+    //@RolesAllowed({"Administrador", "Assistente"})
     public Response update(@PathParam("id") Long id, MunicipioDTO dto) {
         LOG.infof("Alterando um municipio: %s", dto.descricao());
         Result result = null;
@@ -94,7 +109,7 @@ public class MunicipioResource {
 
     @DELETE
     @Path("/{id}")
-    @RolesAllowed({"Administrador", "Assistente"})
+    //@RolesAllowed({"Administrador", "Assistente"})
     public Response delete(@PathParam("id") Long id) {
         LOG.infof("Deletando um municipio: %s", id);
         Result result = null;
@@ -117,7 +132,7 @@ public class MunicipioResource {
 
     @GET
     @Path("/search/{descricao}")
-    @RolesAllowed({"Administrador", "Assistente"})
+    //@RolesAllowed({"Administrador", "Assistente"})
     public Response search(@PathParam("descricao") String descricao) {
         LOG.infof("Pesquisando municípios pelo nome: %s", descricao);
         Result result = null;
