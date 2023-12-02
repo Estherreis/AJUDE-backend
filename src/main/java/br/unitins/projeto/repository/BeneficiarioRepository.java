@@ -21,4 +21,12 @@ public class BeneficiarioRepository implements PanacheRepository<Beneficiario> {
         return find("cpf LIKE ?1 ", "%"+cpf+"%").list();
     }
 
+    public List<Beneficiario> getAll(Long idOrgao){
+        if (idOrgao == null)
+            return null;
+        return find("SELECT b FROM Beneficiario b WHERE EXISTS " +
+                        "(SELECT 1 FROM Atendimento a WHERE a.beneficiario = b AND a.orgao.id = ?1)",
+                idOrgao).list();
+    }
+
 }

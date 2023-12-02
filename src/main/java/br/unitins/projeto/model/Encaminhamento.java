@@ -33,6 +33,9 @@ public class Encaminhamento extends DefaultEntity {
     @Column(name = "motivo", nullable = false)
     private String motivo;
 
+    @Column(name = "descricao", nullable = false)
+    private String descricao;
+
     public Orgao getOrgaoAtual() {
         return orgaoAtual;
     }
@@ -79,5 +82,13 @@ public class Encaminhamento extends DefaultEntity {
 
     public void setAtendimento(Atendimento atendimento) {
         this.atendimento = atendimento;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
     }
 }

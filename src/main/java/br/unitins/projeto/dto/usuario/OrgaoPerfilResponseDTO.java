@@ -4,6 +4,9 @@ import br.unitins.projeto.dto.orgao.OrgaoResponseDTO;
 import br.unitins.projeto.model.Orgao;
 import br.unitins.projeto.model.OrgaoPerfil;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 public record OrgaoPerfilResponseDTO (
         Long id,
         String perfil,

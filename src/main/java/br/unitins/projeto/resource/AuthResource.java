@@ -3,15 +3,12 @@ package br.unitins.projeto.resource;
 import br.unitins.projeto.dto.auth_usuario.AuthUsuarioDTO;
 import br.unitins.projeto.dto.usuario.OrgaoPerfilDTO;
 import br.unitins.projeto.dto.usuario.OrgaoPerfilResponseDTO;
-import br.unitins.projeto.model.OrgaoPerfil;
 import br.unitins.projeto.model.Perfil;
 import br.unitins.projeto.model.Usuario;
 import br.unitins.projeto.repository.OrgaoRepository;
 import br.unitins.projeto.service.hash.HashService;
 import br.unitins.projeto.service.token_jwt.TokenJwtService;
 import br.unitins.projeto.service.usuario.UsuarioService;
-import io.smallrye.jwt.build.Jwt;
-import io.smallrye.jwt.build.JwtClaimsBuilder;
 import jakarta.annotation.security.PermitAll;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
@@ -20,7 +17,6 @@ import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -28,6 +24,8 @@ import jakarta.ws.rs.core.Response.Status;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.logging.Logger;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -66,6 +64,8 @@ public class AuthResource {
         if (usuario == null) {
             return Response.status(Status.NO_CONTENT)
                     .entity("Usuario não encontrado").build();
+        } else {
+            usuario.setPerfil(new HashSet<>(Set.of(Perfil.LOGADO)));
         }
 
         return Response.ok()
@@ -75,6 +75,7 @@ public class AuthResource {
 
     @GET
     @Path("/lotacoes")
+    @RolesAllowed({"Logado"})
     public List<OrgaoPerfilResponseDTO> getLotacoes() {
         String login = jwt.getSubject();
         Usuario usuario = usuarioService.findByLogin(login);
@@ -83,14 +84,17 @@ public class AuthResource {
 
     @POST
     @Path("/lotacoes")
+    @RolesAllowed({"Logado"})
     public Response setLotacao(OrgaoPerfilDTO orgaoPerfil) {
         String login = jwt.getSubject();
         Usuario usuario = usuarioService.findByLogin(login);
 
+        Set<Perfil> perfil = Collections.singleton(Perfil.valueOf(orgaoPerfil.idPerfil()));
+
         return Response.ok()
                 .header("Authorization", tokenService.generateJwt(
                         orgaoRepository.findById(orgaoPerfil.idOrgao()),
-                        Perfil.valueOf(orgaoPerfil.idPerfil()),
+                        perfil,
                         usuario))
                 .build();
     }

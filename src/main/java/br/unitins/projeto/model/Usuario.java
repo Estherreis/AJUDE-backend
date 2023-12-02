@@ -2,12 +2,10 @@ package br.unitins.projeto.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.persistence.Transient;
 
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "id")
@@ -30,6 +28,9 @@ public class Usuario extends DefaultEntity {
 
     @Column(name = "ativo", nullable = false)
     private Boolean ativo;
+
+    @Transient
+    Set<Perfil> perfil;
 
     public String getNome() {
         return nome;
@@ -77,5 +78,13 @@ public class Usuario extends DefaultEntity {
 
     public void setAtivo(Boolean ativo) {
         this.ativo = ativo;
+    }
+
+    public Set<Perfil> getPerfil() {
+        return perfil;
+    }
+
+    public void setPerfil(Set<Perfil> perfil) {
+        this.perfil = perfil;
     }
 }

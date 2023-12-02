@@ -32,7 +32,7 @@ public class OrgaoResource {
     private static final Logger LOG = Logger.getLogger(OrgaoResource.class);
 
     @GET
-    @RolesAllowed({"Administrador", "Assistente"})
+    @RolesAllowed({"Administrador"})
     public List<OrgaoResponseDTO> getAll() {
         LOG.info("Buscando todos os órgãos.");
         return service.getAll();
@@ -40,14 +40,14 @@ public class OrgaoResource {
 
     @GET
     @Path("/{id}")
-    @RolesAllowed({"Administrador", "Assistente"})
+    @RolesAllowed({"Administrador"})
     public OrgaoResponseDTO findById(@PathParam("id") Long id) {
         LOG.info("Buscando um órgão pelo id.");
         return service.findById(id);
     }
 
     @POST
-    @RolesAllowed({"Administrador", "Assistente"})
+    @RolesAllowed({"Administrador"})
     public Response insert(OrgaoDTO dto) {
         LOG.infof("Inserindo um órgão: %s", dto.nome());
         Result result = null;
@@ -70,7 +70,7 @@ public class OrgaoResource {
 
     @PUT
     @Path("/{id}")
-    @RolesAllowed({"Administrador", "Assistente"})
+    @RolesAllowed({"Administrador"})
     public Response update(@PathParam("id") Long id, OrgaoDTO dto) {
         LOG.infof("Alterando um órgão: %s", dto.nome());
         Result result = null;
@@ -93,7 +93,7 @@ public class OrgaoResource {
 
     @DELETE
     @Path("/{id}")
-    @RolesAllowed({"Administrador", "Assistente"})
+    @RolesAllowed({"Administrador"})
     public Response delete(@PathParam("id") Long id) {
         LOG.infof("Deletando um órgão: %s", id);
         Result result = null;
@@ -116,7 +116,7 @@ public class OrgaoResource {
 
     @PUT
     @Path("/situacao/{id}")
-    @RolesAllowed({"Administrador", "Assistente"})
+    @RolesAllowed({"Administrador"})
     public Response alterarSituacao(@PathParam("id") Long id, Boolean situacao) {
         LOG.infof("Alterando situação do órgão");
         Result result = null;
