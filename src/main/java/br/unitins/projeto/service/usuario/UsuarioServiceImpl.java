@@ -1,12 +1,9 @@
 package br.unitins.projeto.service.usuario;
 
-import br.unitins.projeto.dto.orgao.OrgaoDTO;
-import br.unitins.projeto.dto.orgao.OrgaoResponseDTO;
 import br.unitins.projeto.dto.usuario.OrgaoPerfilDTO;
 import br.unitins.projeto.dto.usuario.OrgaoPerfilResponseDTO;
 import br.unitins.projeto.dto.usuario.UsuarioDTO;
 import br.unitins.projeto.dto.usuario.UsuarioResponseDTO;
-import br.unitins.projeto.model.Orgao;
 import br.unitins.projeto.model.OrgaoPerfil;
 import br.unitins.projeto.model.Perfil;
 import br.unitins.projeto.model.Usuario;
@@ -22,8 +19,6 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.NotFoundException;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;

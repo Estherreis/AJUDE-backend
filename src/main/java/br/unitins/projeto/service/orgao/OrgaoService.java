@@ -21,6 +21,10 @@ public interface OrgaoService {
 
     void delete(Long id);
 
+    List<OrgaoResponseDTO> findByNomeOuSigla(String nomeOuSigla, int page, int pageSize);
+
+    Long countByNomeOuSigla(String nomeOuSigla);
+
     Long count();
 
 }

@@ -4,7 +4,6 @@ import br.unitins.projeto.application.Result;
 import br.unitins.projeto.dto.municipio.MunicipioDTO;
 import br.unitins.projeto.dto.municipio.MunicipioResponseDTO;
 import br.unitins.projeto.service.municipio.MunicipioService;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.Consumes;

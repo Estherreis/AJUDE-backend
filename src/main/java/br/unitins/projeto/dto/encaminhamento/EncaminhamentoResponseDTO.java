@@ -2,7 +2,6 @@ package br.unitins.projeto.dto.encaminhamento;
 
 import br.unitins.projeto.dto.orgao.OrgaoResponseDTO;
 import br.unitins.projeto.dto.usuario.UsuarioResponseDTO;
-import br.unitins.projeto.model.Atendimento;
 import br.unitins.projeto.model.Encaminhamento;
 import br.unitins.projeto.model.Orgao;
 import br.unitins.projeto.model.Usuario;

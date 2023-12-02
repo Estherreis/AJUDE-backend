@@ -2,12 +2,8 @@ package br.unitins.projeto.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 
-import java.util.List;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "id")

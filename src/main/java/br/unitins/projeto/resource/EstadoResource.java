@@ -4,7 +4,6 @@ import br.unitins.projeto.application.Result;
 import br.unitins.projeto.dto.estado.EstadoDTO;
 import br.unitins.projeto.dto.estado.EstadoResponseDTO;
 import br.unitins.projeto.service.estado.EstadoService;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.Consumes;

@@ -1,7 +1,6 @@
 package br.unitins.projeto.resource;
 
 import br.unitins.projeto.application.Result;
-import br.unitins.projeto.dto.usuario.OrgaoPerfilResponseDTO;
 import br.unitins.projeto.dto.usuario.UsuarioDTO;
 import br.unitins.projeto.dto.usuario.UsuarioResponseDTO;
 import br.unitins.projeto.service.usuario.UsuarioService;

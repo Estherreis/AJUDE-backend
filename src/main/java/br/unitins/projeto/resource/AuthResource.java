@@ -3,24 +3,19 @@ package br.unitins.projeto.resource;
 import br.unitins.projeto.dto.auth_usuario.AuthUsuarioDTO;
 import br.unitins.projeto.dto.usuario.OrgaoPerfilDTO;
 import br.unitins.projeto.dto.usuario.OrgaoPerfilResponseDTO;
-import br.unitins.projeto.model.OrgaoPerfil;
 import br.unitins.projeto.model.Perfil;
 import br.unitins.projeto.model.Usuario;
 import br.unitins.projeto.repository.OrgaoRepository;
 import br.unitins.projeto.service.hash.HashService;
 import br.unitins.projeto.service.token_jwt.TokenJwtService;
 import br.unitins.projeto.service.usuario.UsuarioService;
-import io.smallrye.jwt.build.Jwt;
-import io.smallrye.jwt.build.JwtClaimsBuilder;
 import jakarta.annotation.security.PermitAll;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
-import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -29,8 +24,6 @@ import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.logging.Logger;
 
 import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Path("/auth")
 @Consumes(MediaType.APPLICATION_JSON)

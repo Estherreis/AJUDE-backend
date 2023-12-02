@@ -18,6 +18,8 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.Status;
+
 import org.jboss.logging.Logger;
 
 import java.util.List;
@@ -44,12 +46,10 @@ public class OrgaoResource {
             @QueryParam("page") @DefaultValue("0") int page,
             @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
 
-
         LOG.info("Buscando todos os órgãos com paginação.");
         LOG.debug("ERRO DE DEBUG.");
         return service.getAll(page, pageSize);
     }
-
 
     @GET
     @Path("/{id}")
@@ -149,6 +149,36 @@ public class OrgaoResource {
     @Path("/count")
     public Long count() {
         return service.count();
+    }
+
+    @GET
+    @Path("/search/{nomeOuSigla}")
+    public Response search(@PathParam("nomeOuSigla") String nomeOuSigla,
+            @QueryParam("page") @DefaultValue("0") int page,
+            @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+        LOG.infof("Pesquisando estados pelo nome/sigla: %s", nomeOuSigla);
+        Result result = null;
+
+        try {
+            List<OrgaoResponseDTO> response = service.findByNomeOuSigla(nomeOuSigla, page, pageSize);
+            LOG.infof("Pesquisa realizada com sucesso.");
+            return Response.ok(response).build();
+        } catch (ConstraintViolationException e) {
+            LOG.error("Erro ao pesquisar estados.");
+            LOG.debug(e.getMessage());
+            result = new Result(e.getConstraintViolations());
+        } catch (Exception e) {
+            LOG.fatal("Erro sem identificacao: " + e.getMessage());
+            result = new Result(e.getMessage(), false);
+        }
+
+        return Response.status(Status.NOT_FOUND).entity(result).build();
+    }
+
+    @GET
+    @Path("/search/{nomeOuSigla}/count")
+    public Long count(@PathParam("nomeOuSigla") String nomeOuSigla) {
+        return service.countByNomeOuSigla(nomeOuSigla);
     }
 
 }
