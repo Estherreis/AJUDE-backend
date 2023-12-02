@@ -22,20 +22,28 @@ public class TokenJwtServiceImpl implements TokenJwtService {
         Instant now = Instant.now();
         Instant expiryDate = now.plus(EXPIRATION_TIME);
 
+        Set<String> roles = usuario.getPerfil()
+                .stream().map(p -> p.getLabel())
+                .collect(Collectors.toSet());
+
          return Jwt.issuer("unitins-jwt")
                 .subject(usuario.getLogin())
+                 .groups(roles)
                 .expiresAt(expiryDate)
                 .sign();
     }
 
     @Override
-    public String generateJwt(Orgao orgao, Perfil perfil, Usuario usuario) {
+    public String generateJwt(Orgao orgao, Set<Perfil> perfil, Usuario usuario) {
         Instant now = Instant.now();
         Instant expiryDate = now.plus(EXPIRATION_TIME);
 
+        Set<String> roles = perfil.stream().map(p -> p.getLabel())
+                .collect(Collectors.toSet());
+
         return Jwt.issuer("unitins-jwt")
                 .subject(usuario.getLogin())
-                .groups(perfil.getLabel())
+                .groups(roles)
                 .claim("orgao", orgao.getId())
                 .expiresAt(expiryDate)
                 .sign();

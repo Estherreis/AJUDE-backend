@@ -40,6 +40,7 @@ public class AtendimentoServiceImpl implements AtendimentoService {
     @Inject
     Validator validator;
 
+    @Inject
     JsonWebToken jwt;
 
     @Override
@@ -60,7 +61,9 @@ public class AtendimentoServiceImpl implements AtendimentoService {
 
     @Override
     public List<AtendimentoResponseDTO> findByBeneficiario(Long idBeneficiario) {
-        List<Atendimento> list = repository.findByBeneficiario(idBeneficiario);
+        String idOrgao = jwt.getClaim("orgao").toString();
+
+        List<Atendimento> list = repository.findByBeneficiario(idBeneficiario, Long.valueOf(idOrgao));
 
         return list.stream().map(AtendimentoResponseDTO::new).collect(Collectors.toList());
     }
