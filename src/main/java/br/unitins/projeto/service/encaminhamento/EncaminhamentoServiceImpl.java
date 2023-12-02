@@ -9,7 +9,7 @@ import br.unitins.projeto.model.Usuario;
 import br.unitins.projeto.repository.AtendimentoRepository;
 import br.unitins.projeto.repository.EncaminhamentoRepository;
 import br.unitins.projeto.repository.OrgaoRepository;
-import br.unitins.projeto.repository.UsuarioRepository;
+import br.unitins.projeto.service.usuario.UsuarioService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -17,6 +17,7 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.NotFoundException;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -36,7 +37,10 @@ public class EncaminhamentoServiceImpl implements EncaminhamentoService {
     AtendimentoRepository atendimentoRepository;
 
     @Inject
-    UsuarioRepository usuarioRepository;
+    UsuarioService usuarioService;
+
+    @Inject
+    JsonWebToken jwt;
 
     @Inject
     Validator validator;
@@ -65,7 +69,10 @@ public class EncaminhamentoServiceImpl implements EncaminhamentoService {
         Encaminhamento entity = new Encaminhamento();
         Atendimento atendimento = atendimentoRepository.findById(encaminhamentoDTO.idAtendimento());
         Orgao orgaoDestino = orgaoRepository.findById(encaminhamentoDTO.idOrgao());
-        Usuario usuario = usuarioRepository.findById(encaminhamentoDTO.idUsuario());
+
+        String login = jwt.getSubject();
+        Usuario usuario = usuarioService.findByLogin(login);
+        Orgao orgaoUsuarioLogado = orgaoRepository.findById(Long.valueOf(jwt.getClaim("orgao").toString()));
 
         entity.setOrgaoAtual(atendimento.getOrgao());
         entity.setOrgaoDestino(orgaoDestino);
@@ -73,6 +80,7 @@ public class EncaminhamentoServiceImpl implements EncaminhamentoService {
         entity.setUsuarioInclusao(usuario);
         entity.setDataInclusao(LocalDateTime.now());
         entity.setMotivo(encaminhamentoDTO.motivo());
+        entity.setDescricao(usuario.getNome() + " - " + orgaoUsuarioLogado.getSigla());
 
         atendimento.setOrgao(orgaoDestino);
 

@@ -2,18 +2,18 @@ package br.unitins.projeto.model;
 
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.PrimaryKeyJoinColumn;
-
-import java.util.Set;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "id")
 public class OrgaoPerfil extends DefaultEntity {
 
     @JoinColumn(name = "id_perfil", nullable = false)
-    Set<Perfil> perfil;
+    Perfil perfil;
 
     @ManyToOne
     @JoinColumn(name = "id_orgao", nullable = false)
@@ -23,11 +23,11 @@ public class OrgaoPerfil extends DefaultEntity {
     @JoinColumn(name = "id_usuario", nullable = false)
     Usuario usuario;
 
-    public Set<Perfil> getPerfil() {
+    public Perfil getPerfil() {
         return perfil;
     }
 
-    public void setPerfil(Set<Perfil> perfil) {
+    public void setPerfil(Perfil perfil) {
         this.perfil = perfil;
     }
 

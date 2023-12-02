@@ -24,6 +24,7 @@ import jakarta.ws.rs.core.Response.Status;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.logging.Logger;
 
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -88,13 +89,12 @@ public class AuthResource {
         String login = jwt.getSubject();
         Usuario usuario = usuarioService.findByLogin(login);
 
-        Set<Perfil> perfis = orgaoPerfil.idPerfil().stream()
-                .map(x -> Perfil.valueOf(x)).collect(Collectors.toSet());
+        Set<Perfil> perfil = Collections.singleton(Perfil.valueOf(orgaoPerfil.idPerfil()));
 
         return Response.ok()
                 .header("Authorization", tokenService.generateJwt(
                         orgaoRepository.findById(orgaoPerfil.idOrgao()),
-                        perfis,
+                        perfil,
                         usuario))
                 .build();
     }

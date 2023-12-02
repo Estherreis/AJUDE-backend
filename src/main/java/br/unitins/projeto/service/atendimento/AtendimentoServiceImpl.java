@@ -2,12 +2,15 @@ package br.unitins.projeto.service.atendimento;
 
 import br.unitins.projeto.dto.atendimento.AtendimentoDTO;
 import br.unitins.projeto.dto.atendimento.AtendimentoResponseDTO;
+import br.unitins.projeto.dto.atendimento.AtendimentoUpdateDTO;
 import br.unitins.projeto.model.Atendimento;
 import br.unitins.projeto.model.SituacaoAtendimento;
+import br.unitins.projeto.model.Usuario;
 import br.unitins.projeto.repository.AtendimentoRepository;
 import br.unitins.projeto.repository.BeneficiarioRepository;
 import br.unitins.projeto.repository.OrgaoRepository;
 import br.unitins.projeto.repository.UsuarioRepository;
+import br.unitins.projeto.service.usuario.UsuarioService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -35,7 +38,7 @@ public class AtendimentoServiceImpl implements AtendimentoService {
     BeneficiarioRepository beneficiarioRepository;
 
     @Inject
-    UsuarioRepository usuarioRepository;
+    UsuarioService usuarioService;
 
     @Inject
     Validator validator;
@@ -73,12 +76,16 @@ public class AtendimentoServiceImpl implements AtendimentoService {
     public AtendimentoResponseDTO create(AtendimentoDTO atendimentoDTO) throws ConstraintViolationException {
         validar(atendimentoDTO);
 
+        String idOrgao = jwt.getClaim("orgao").toString();
+        String login = jwt.getSubject();
+        Usuario usuario = usuarioService.findByLogin(login);
+
         Atendimento entity = new Atendimento();
 
-        entity.setOrgao(orgaoRepository.findById(atendimentoDTO.idOrgao()));
+        entity.setOrgao(orgaoRepository.findById(Long.valueOf(idOrgao)));
         entity.setBeneficiario(beneficiarioRepository.findById(atendimentoDTO.idBeneficiario()));
         entity.setDataInclusao(LocalDateTime.now());
-        entity.setUsuarioInclusao(usuarioRepository.findById(atendimentoDTO.idUsuarioInclusao()));
+        entity.setUsuarioInclusao(usuario);
         entity.setDescricao(atendimentoDTO.descricao());
         entity.setSituacaoAtendimento(SituacaoAtendimento.EM_ANDAMENTO);
 
@@ -89,14 +96,9 @@ public class AtendimentoServiceImpl implements AtendimentoService {
 
     @Override
     @Transactional
-    public AtendimentoResponseDTO update(Long id, AtendimentoDTO atendimentoDTO) throws ConstraintViolationException {
-        validar(atendimentoDTO);
-
+    public AtendimentoResponseDTO update(Long id, AtendimentoUpdateDTO atendimentoDTO) throws ConstraintViolationException {
         Atendimento entity = repository.findById(id);
 
-        entity.setOrgao(orgaoRepository.findById(atendimentoDTO.idOrgao()));
-        entity.setBeneficiario(beneficiarioRepository.findById(atendimentoDTO.idBeneficiario()));
-        entity.setUsuarioInclusao(usuarioRepository.findById(atendimentoDTO.idUsuarioInclusao()));
         entity.setDescricao(atendimentoDTO.descricao());
 
         return new AtendimentoResponseDTO(entity);

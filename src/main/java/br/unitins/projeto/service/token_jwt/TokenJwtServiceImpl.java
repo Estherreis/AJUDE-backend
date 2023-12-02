@@ -1,5 +1,6 @@
 package br.unitins.projeto.service.token_jwt;
 
+import br.unitins.projeto.dto.usuario.UsuarioResponseDTO;
 import br.unitins.projeto.model.Orgao;
 import br.unitins.projeto.model.OrgaoPerfil;
 import br.unitins.projeto.model.Perfil;

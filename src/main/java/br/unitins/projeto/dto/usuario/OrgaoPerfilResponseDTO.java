@@ -9,11 +9,11 @@ import java.util.stream.Collectors;
 
 public record OrgaoPerfilResponseDTO (
         Long id,
-        Set<String> perfil,
+        String perfil,
         OrgaoResponseDTO orgaoResponseDTO
 ) {
     public OrgaoPerfilResponseDTO(OrgaoPerfil entity) {
-        this(entity.getId(), entity.getPerfil().stream().map(x -> x.getLabel()).collect(Collectors.toSet()), gerarOrgaoResponseDTO(entity.getOrgao()));
+        this(entity.getId(), entity.getPerfil().getLabel(), gerarOrgaoResponseDTO(entity.getOrgao()));
     }
 
     public static OrgaoResponseDTO gerarOrgaoResponseDTO(Orgao orgao) {

@@ -21,6 +21,7 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.NotFoundException;
+import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -78,8 +79,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         OrgaoPerfil orgaoPerfil = new OrgaoPerfil();
         orgaoPerfil.setOrgao(orgaoRepository.findById(usuarioDTO.orgaoPerfil().idOrgao()));
-        orgaoPerfil.setPerfil(usuarioDTO.orgaoPerfil().idPerfil().stream()
-                .map(x -> Perfil.valueOf(x)).collect(Collectors.toSet()));
+        orgaoPerfil.setPerfil(Perfil.valueOf(usuarioDTO.orgaoPerfil().idPerfil()));
         orgaoPerfil.setUsuario(entity);
         orgaoPerfilRepository.persist(orgaoPerfil);
 
@@ -110,10 +110,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
         OrgaoPerfil orgaoPerfil = new OrgaoPerfil();
         orgaoPerfil.setOrgao(orgaoRepository.findById(orgaoPerfilDTO.idOrgao()));
-        orgaoPerfil.setPerfil(
-                orgaoPerfilDTO.idPerfil().stream()
-                        .map(x -> Perfil.valueOf(x)).collect(Collectors.toSet())
-        );
+        orgaoPerfil.setPerfil(Perfil.valueOf(orgaoPerfilDTO.idPerfil()));
         orgaoPerfil.setUsuario(entity);
         orgaoPerfilRepository.persist(orgaoPerfil);
 
