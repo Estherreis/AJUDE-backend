@@ -39,13 +39,9 @@ public class BeneficiarioServiceImpl implements BeneficiarioService{
     @Inject
     Validator validator;
 
-    @Inject
-    JsonWebToken jwt;
-
     @Override
     public List<BeneficiarioResponseDTO> getAll() {
-        String idOrgao = jwt.getClaim("orgao").toString();
-        List<Beneficiario> list = beneficiarioRepository.getAll(Long.valueOf(idOrgao));
+        List<Beneficiario> list = beneficiarioRepository.listAll();
         return list.stream().map(BeneficiarioResponseDTO::new).collect(Collectors.toList());
 
     }
