@@ -28,8 +28,16 @@ public record BeneficiarioDTO(
     @Size(max = 15, message = "O campo NIS deve possuir no máximo 15 caracteres.")
     String nis,
 
+    @NotBlank(message = "O email deve ser informado")
+    String email,
+
+    @NotBlank(message = "O campo telefone deve ser informado")
+    @Size(min = 11, max = 11, message = "O telefone deve conter 11 digitos")
+    String telefone,
+
     LocalDate nascimento,
 
     EnderecoDTO enderecoDTO
+
 
 ) {}

@@ -14,10 +14,13 @@ public record BeneficiarioResponseDTO(
     LocalDate dataNascimento,
     EnderecoResponseDTO enderecoResponseDTO,
     String nis,
-    String cpfPai
+    String cpfPai,
+    String telefone,
+    String email
 ) {
     public BeneficiarioResponseDTO (Beneficiario entity){
         this(entity.getId(), entity.getNome(), entity.getCpf(), entity.getRg(), entity.getDataNascimento(), 
-        new EnderecoResponseDTO(entity.getEndereco()), entity.getNis(), entity.getCpfPai());
+        new EnderecoResponseDTO(entity.getEndereco()), entity.getNis(), entity.getCpfPai(), entity.getTelefone(),
+        entity.getEmail());
     }
 }

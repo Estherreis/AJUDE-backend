@@ -8,7 +8,7 @@ import br.unitins.projeto.dto.beneficiario.BeneficiarioResponseDTO;
 public interface BeneficiarioService {
     
 
-    List<BeneficiarioResponseDTO> getAll();
+    List<BeneficiarioResponseDTO> getAll(int page, int pageSize);
 
     BeneficiarioResponseDTO findById(Long id);
 

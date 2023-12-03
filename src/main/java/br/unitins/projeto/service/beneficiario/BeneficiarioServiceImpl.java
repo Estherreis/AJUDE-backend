@@ -39,9 +39,9 @@ public class BeneficiarioServiceImpl implements BeneficiarioService{
     Validator validator;
 
     @Override
-    public List<BeneficiarioResponseDTO> getAll() {
+    public List<BeneficiarioResponseDTO> getAll(int page, int pageSize) {
 
-        List<Beneficiario> list = beneficiarioRepository.listAll();
+        List<Beneficiario> list = beneficiarioRepository.findAll().page(page, pageSize).list();
         return list.stream().map(BeneficiarioResponseDTO::new).collect(Collectors.toList());
 
     }
@@ -72,6 +72,8 @@ public class BeneficiarioServiceImpl implements BeneficiarioService{
         entity.setDataNascimento(beneficiarioDTO.nascimento());
         entity.setCpfPai(beneficiarioDTO.cpfPais());
         entity.setRg(beneficiarioDTO.rg());
+        entity.setEmail(beneficiarioDTO.email());
+        entity.setTelefone(beneficiarioDTO.telefone());
 
         
         endereco.setMunicipio(municipioRepository.findById(beneficiarioDTO.enderecoDTO().idMunicipio()));
@@ -80,6 +82,8 @@ public class BeneficiarioServiceImpl implements BeneficiarioService{
         endereco.setComplemento(beneficiarioDTO.enderecoDTO().complemento());
         endereco.setNumero(beneficiarioDTO.enderecoDTO().numero());
         endereco.setLogradouro(beneficiarioDTO.enderecoDTO().logradouro());
+        endereco.setCep(beneficiarioDTO.enderecoDTO().cep());
+
         entity.setEndereco(endereco);
 
         enderecoRepository.persist(endereco);
@@ -101,6 +105,8 @@ public class BeneficiarioServiceImpl implements BeneficiarioService{
         entity.setNis(beneficiarioDTO.nis());
         entity.setDataNascimento(beneficiarioDTO.nascimento());
         entity.setCpfPai(beneficiarioDTO.cpfPais());
+        entity.setEmail(beneficiarioDTO.email());
+        entity.setTelefone(beneficiarioDTO.telefone());
 
         endereco.setMunicipio(municipioRepository.findById(entity.getEndereco().getMunicipio().getId()));
         endereco.setEstado(estadoRepository.findById(entity.getEndereco().getEstado().getId()));
@@ -108,6 +114,7 @@ public class BeneficiarioServiceImpl implements BeneficiarioService{
         endereco.setComplemento(entity.getEndereco().getComplemento());
         endereco.setNumero(entity.getEndereco().getNumero());
         endereco.setLogradouro(entity.getEndereco().getLogradouro());
+        endereco.setCep(beneficiarioDTO.enderecoDTO().cep());
         entity.setEndereco(endereco);
 
         enderecoRepository.persist(endereco);

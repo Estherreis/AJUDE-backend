@@ -28,6 +28,18 @@ public class Endereco extends DefaultEntity {
     @Column(nullable = true, length = 30)
     private String complemento;
 
+    private String cep;
+
+    
+
+
+    public String getCep() {
+        return cep;
+    }
+
+    public void setCep(String cep) {
+        this.cep = cep;
+    }
 
     public Estado getEstado() {
         return estado;

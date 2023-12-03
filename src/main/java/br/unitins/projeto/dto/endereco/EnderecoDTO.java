@@ -22,7 +22,10 @@ public record EnderecoDTO (
     Long numero,
     
     @Size(max = 40, message = "O sigla deve posssuir 40 caracteres.")
-    String complemento
+    String complemento,
+
+    @NotBlank(message = "O cep deve ser preenchido.")
+    String cep
 
 ) {
 

@@ -12,12 +12,14 @@ import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
@@ -34,9 +36,12 @@ public class BeneficiarioResource {
     private static final Logger LOG = Logger.getLogger(BeneficiarioResource.class);
 
     @GET
-    public List<BeneficiarioResponseDTO> getAll() {
+    public List<BeneficiarioResponseDTO> getAll(
+        @QueryParam("page") @DefaultValue("0") int page,
+        @QueryParam("pageSize") @DefaultValue("10") int pageSize
+    ) {
         LOG.info("Buscando todos os beneficiarios.");
-        return service.getAll();
+        return service.getAll(page, pageSize);
     }
 
     @GET

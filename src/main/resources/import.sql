@@ -20,11 +20,11 @@ VALUES (2, 1, 'Bela Vista', 'Avenida Secundária', 25);
 INSERT INTO endereco (id_municipio, id_estado, bairro, logradouro, numero)
 VALUES (1, 1, 'Jardim das Flores', 'Rua das Flores', 7);
 
-INSERT INTO beneficiario (nome, cpf, rg, cpfPai, nis, dataNascimento, id_endereco)
-VALUES ('Esther', '11111111111', '1111111', '22222222222', '111111', '2004-08-23', 1);
-INSERT INTO beneficiario (nome, cpf, rg, cpfPai, nis, dataNascimento, id_endereco)
-VALUES ('Isac', '22222222222', '2222222', '33333333333', '222222', '1990-05-15', 2);
-INSERT INTO beneficiario (nome, cpf, rg, cpfPai, nis, dataNascimento, id_endereco)
-VALUES ('Iad', '33333333333', '3333333', '44444444444', '333333', '1985-12-10', 3);
-INSERT INTO beneficiario (nome, cpf, rg, cpfPai, nis, dataNascimento, id_endereco)
-VALUES ('Tayse', '44444444444', '4444444', '55555555555', '444444', '2000-02-28', 4);
+INSERT INTO beneficiario (nome, cpf, rg, cpfPai, nis, dataNascimento, id_endereco, telefone, email)
+VALUES ('Esther', '11111111111', '1111111', '22222222222', '111111', '2004-08-23', 1, '12345678910', 'esther@');
+INSERT INTO beneficiario (nome, cpf, rg, cpfPai, nis, dataNascimento, id_endereco, telefone, email)
+VALUES ('Isac', '22222222222', '2222222', '33333333333', '222222', '1990-05-15', 2, '12345678910', 'isac@');
+INSERT INTO beneficiario (nome, cpf, rg, cpfPai, nis, dataNascimento, id_endereco, telefone, email)
+VALUES ('Iad', '33333333333', '3333333', '44444444444', '333333', '1985-12-10', 3, '12345678910', 'iad@');
+INSERT INTO beneficiario (nome, cpf, rg, cpfPai, nis, dataNascimento, id_endereco, telefone, email)
+VALUES ('Tayse', '44444444444', '4444444', '55555555555', '444444', '2000-02-28', 4, '12345678910', 'tayse@');

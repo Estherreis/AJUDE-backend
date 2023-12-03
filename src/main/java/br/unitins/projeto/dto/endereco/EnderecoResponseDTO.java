@@ -11,11 +11,12 @@ public record EnderecoResponseDTO(
     EstadoResponseDTO estado,
     String bairro,
     String logradouro,
-    String complemento
+    String complemento,
+    String cep
 
 ) {
         public EnderecoResponseDTO(Endereco entity){
             this(entity.getId(), new MunicipioResponseDTO(entity.getMunicipio()), new EstadoResponseDTO(entity.getEstado()), 
-            entity.getBairro(), entity.getLogradouro(), entity.getComplemento());
+            entity.getBairro(), entity.getLogradouro(), entity.getComplemento(), entity.getCep());
         }
 }
