@@ -5,7 +5,6 @@ import br.unitins.projeto.dto.usuario.UsuarioDTO;
 import br.unitins.projeto.dto.usuario.UsuarioLotacoesResponseDTO;
 import br.unitins.projeto.dto.usuario.UsuarioResponseDTO;
 import br.unitins.projeto.service.usuario.UsuarioService;
-import jakarta.annotation.security.PermitAll;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.Consumes;
@@ -74,7 +73,7 @@ public class UsuarioResource {
     }
 
     @POST
-    @RolesAllowed({ "Administrador" })
+    // @RolesAllowed({"Administrador"})
     public Response insert(UsuarioDTO dto) {
         LOG.infof("Inserindo um usuário: %s", dto.nome());
         Result result = null;

@@ -10,6 +10,7 @@ import br.unitins.projeto.service.hash.HashService;
 import br.unitins.projeto.service.token_jwt.TokenJwtService;
 import br.unitins.projeto.service.usuario.UsuarioService;
 import jakarta.annotation.security.PermitAll;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
@@ -26,6 +27,7 @@ import org.jboss.logging.Logger;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Path("/auth")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -72,7 +74,7 @@ public class AuthResource {
 
     @GET
     @Path("/lotacoes")
-    @RolesAllowed({"Logado"})
+    @RolesAllowed({ "Logado" })
     public List<OrgaoPerfilResponseDTO> getLotacoes() {
         String login = jwt.getSubject();
         Usuario usuario = usuarioService.findByLogin(login);
@@ -81,7 +83,7 @@ public class AuthResource {
 
     @POST
     @Path("/lotacoes")
-    @RolesAllowed({"Logado"})
+    @RolesAllowed({ "Logado" })
     public Response setLotacao(OrgaoPerfilDTO orgaoPerfil) {
         String login = jwt.getSubject();
         Usuario usuario = usuarioService.findByLogin(login);

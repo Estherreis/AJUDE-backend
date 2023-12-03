@@ -9,7 +9,6 @@ import br.unitins.projeto.model.Usuario;
 import br.unitins.projeto.repository.AtendimentoRepository;
 import br.unitins.projeto.repository.BeneficiarioRepository;
 import br.unitins.projeto.repository.OrgaoRepository;
-import br.unitins.projeto.repository.UsuarioRepository;
 import br.unitins.projeto.service.usuario.UsuarioService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -96,7 +95,8 @@ public class AtendimentoServiceImpl implements AtendimentoService {
 
     @Override
     @Transactional
-    public AtendimentoResponseDTO update(Long id, AtendimentoUpdateDTO atendimentoDTO) throws ConstraintViolationException {
+    public AtendimentoResponseDTO update(Long id, AtendimentoUpdateDTO atendimentoDTO)
+            throws ConstraintViolationException {
         Atendimento entity = repository.findById(id);
 
         entity.setDescricao(atendimentoDTO.descricao());
