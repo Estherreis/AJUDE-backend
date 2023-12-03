@@ -128,7 +128,7 @@ public class BeneficiarioResource {
 
     @GET
     @Path("/search/{nomeOuCpf}/count")
-    public Long count(@PathParam("nomeOuSigla") String nomeOuCpf) {
+    public Long count(@PathParam("nomeOuCpf") String nomeOuCpf) {
         return service.countByNomeOuCpf(nomeOuCpf);
     }
 }
