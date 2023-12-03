@@ -3,6 +3,7 @@ package br.unitins.projeto.service.usuario;
 import br.unitins.projeto.dto.usuario.OrgaoPerfilDTO;
 import br.unitins.projeto.dto.usuario.OrgaoPerfilResponseDTO;
 import br.unitins.projeto.dto.usuario.UsuarioDTO;
+import br.unitins.projeto.dto.usuario.UsuarioLotacoesResponseDTO;
 import br.unitins.projeto.dto.usuario.UsuarioResponseDTO;
 import br.unitins.projeto.model.OrgaoPerfil;
 import br.unitins.projeto.model.Perfil;
@@ -11,6 +12,7 @@ import br.unitins.projeto.repository.OrgaoPerfilRepository;
 import br.unitins.projeto.repository.OrgaoRepository;
 import br.unitins.projeto.repository.UsuarioRepository;
 import br.unitins.projeto.service.hash.HashService;
+import io.quarkus.panache.common.Page;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -19,6 +21,8 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.NotFoundException;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -98,7 +102,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     @Transactional
-    public UsuarioResponseDTO adicionarUsuario(Long id, OrgaoPerfilDTO orgaoPerfilDTO) throws ConstraintViolationException {
+    public UsuarioResponseDTO adicionarUsuario(Long id, OrgaoPerfilDTO orgaoPerfilDTO)
+            throws ConstraintViolationException {
 
         Usuario entity = repository.findById(id);
 
@@ -119,7 +124,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     }
 
     public List<OrgaoPerfilResponseDTO> getLotacoesUsuario(Long id) {
-        return orgaoPerfilRepository.findByUsuario(id).stream().map(OrgaoPerfilResponseDTO::new).collect(Collectors.toList());
+        return orgaoPerfilRepository.findByUsuario(id).stream().map(OrgaoPerfilResponseDTO::new)
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -139,6 +145,64 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public Usuario findByLogin(String login) {
         return repository.findByLogin(login);
+    }
+
+    @Override
+    public List<UsuarioLotacoesResponseDTO> getAllUsuariosLotacoes(int page, int pageSize) {
+        List<UsuarioLotacoesResponseDTO> usuariosLotacao = new ArrayList<>();
+        List<Usuario> usuarios = repository.findAll().page(page, pageSize).list().stream()
+                .sorted(Comparator.comparing(Usuario::getNome))
+                .collect(Collectors.toList());
+
+        if (!usuarios.isEmpty()) {
+            for (Usuario usuario : usuarios) {
+                List<OrgaoPerfil> lotacoes = this.orgaoPerfilRepository.findByUsuario(usuario.getId());
+                usuariosLotacao.add(new UsuarioLotacoesResponseDTO(usuario, lotacoes));
+            }
+        }
+
+        return usuariosLotacao;
+    }
+
+    @Override
+    public UsuarioLotacoesResponseDTO findUsuarioLotacaoById(Long id) {
+        Usuario usuario = this.repository.findById(id);
+
+        if (usuario == null)
+            throw new NotFoundException("Usuário " + id + "não encontrado.");
+
+        List<OrgaoPerfil> lotacoes = this.orgaoPerfilRepository.findByUsuario(id);
+
+        return new UsuarioLotacoesResponseDTO(usuario, lotacoes);
+    }
+
+    @Override
+    public Long count() {
+        return repository.count();
+    }
+
+    @Override
+    public List<UsuarioLotacoesResponseDTO> findByNomeOuCpf(String nomeOuCpf, int page, int pageSize) {
+        List<UsuarioLotacoesResponseDTO> usuariosLotacao = new ArrayList<>();
+        List<Usuario> usuarios = this.repository.findByNomeOuCpf(nomeOuCpf)
+                .page(Page.of(page, pageSize))
+                .list().stream()
+                .sorted(Comparator.comparing(Usuario::getNome))
+                .collect(Collectors.toList());
+
+        if (!usuarios.isEmpty()) {
+            for (Usuario usuario : usuarios) {
+                List<OrgaoPerfil> lotacoes = this.orgaoPerfilRepository.findByUsuario(usuario.getId());
+                usuariosLotacao.add(new UsuarioLotacoesResponseDTO(usuario, lotacoes));
+            }
+        }
+
+        return usuariosLotacao;
+    }
+
+    @Override
+    public Long countByNomeOuCpf(String nomeOuCpf) {
+        return this.repository.findByNomeOuCpf(nomeOuCpf).count();
     }
 
 }

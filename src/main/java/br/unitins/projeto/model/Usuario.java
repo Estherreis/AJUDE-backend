@@ -4,7 +4,6 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.PrimaryKeyJoinColumn;
 
-
 @Entity
 @PrimaryKeyJoinColumn(name = "id")
 public class Usuario extends DefaultEntity {
@@ -74,4 +73,5 @@ public class Usuario extends DefaultEntity {
     public void setAtivo(Boolean ativo) {
         this.ativo = ativo;
     }
+
 }
