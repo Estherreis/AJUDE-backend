@@ -4,6 +4,8 @@ import br.unitins.projeto.application.Result;
 import br.unitins.projeto.dto.usuario.UsuarioDTO;
 import br.unitins.projeto.dto.usuario.UsuarioLotacoesResponseDTO;
 import br.unitins.projeto.dto.usuario.UsuarioResponseDTO;
+import br.unitins.projeto.dto.usuario.UsuarioUpdateDTO;
+import br.unitins.projeto.model.Perfil;
 import br.unitins.projeto.service.usuario.UsuarioService;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
@@ -97,7 +99,7 @@ public class UsuarioResource {
     @PUT
     @Path("/{id}")
     // @RolesAllowed({"Administrador", "Assistente"})
-    public Response update(@PathParam("id") Long id, UsuarioDTO dto) {
+    public Response update(@PathParam("id") Long id, UsuarioUpdateDTO dto) {
         LOG.infof("Alterando um usuário: %s", dto.nome());
         Result result = null;
 
@@ -168,6 +170,12 @@ public class UsuarioResource {
     @Path("/search/{nomeOuCpf}/count")
     public Long count(@PathParam("nomeOuCpf") String nomeOuCpf) {
         return service.countByNomeOuCpf(nomeOuCpf);
+    }
+
+    @GET
+    @Path("/perfis")
+    public Response getPerfis() {
+        return Response.ok(Perfil.values()).build();
     }
 
 }

@@ -5,6 +5,7 @@ import br.unitins.projeto.dto.usuario.OrgaoPerfilResponseDTO;
 import br.unitins.projeto.dto.usuario.UsuarioDTO;
 import br.unitins.projeto.dto.usuario.UsuarioLotacoesResponseDTO;
 import br.unitins.projeto.dto.usuario.UsuarioResponseDTO;
+import br.unitins.projeto.dto.usuario.UsuarioUpdateDTO;
 import br.unitins.projeto.model.Usuario;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public interface UsuarioService {
 
     UsuarioResponseDTO create(UsuarioDTO productDTO);
 
-    UsuarioResponseDTO update(Long id, UsuarioDTO productDTO);
+    UsuarioResponseDTO update(Long id, UsuarioUpdateDTO productDTO);
 
     UsuarioResponseDTO alterarSituacao(Long id, Boolean situacao);
 

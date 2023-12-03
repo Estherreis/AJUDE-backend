@@ -5,6 +5,7 @@ import br.unitins.projeto.dto.usuario.OrgaoPerfilResponseDTO;
 import br.unitins.projeto.dto.usuario.UsuarioDTO;
 import br.unitins.projeto.dto.usuario.UsuarioLotacoesResponseDTO;
 import br.unitins.projeto.dto.usuario.UsuarioResponseDTO;
+import br.unitins.projeto.dto.usuario.UsuarioUpdateDTO;
 import br.unitins.projeto.model.OrgaoPerfil;
 import br.unitins.projeto.model.Perfil;
 import br.unitins.projeto.model.Usuario;
@@ -75,27 +76,64 @@ public class UsuarioServiceImpl implements UsuarioService {
         entity.setAtivo(true);
         repository.persist(entity);
 
-        OrgaoPerfil orgaoPerfil = new OrgaoPerfil();
-        orgaoPerfil.setOrgao(orgaoRepository.findById(usuarioDTO.orgaoPerfil().idOrgao()));
-        orgaoPerfil.setPerfil(Perfil.valueOf(usuarioDTO.orgaoPerfil().idPerfil()));
-        orgaoPerfil.setUsuario(entity);
-        orgaoPerfilRepository.persist(orgaoPerfil);
+        if (usuarioDTO.orgaosPerfis() != null) {
+            for (OrgaoPerfilDTO orgaoPerfilDTO : usuarioDTO.orgaosPerfis()) {
+                OrgaoPerfil orgaoPerfil = new OrgaoPerfil();
+                orgaoPerfil.setOrgao(orgaoRepository.findById(orgaoPerfilDTO.idOrgao()));
+                orgaoPerfil.setPerfil(Perfil.valueOf(orgaoPerfilDTO.idPerfil()));
+                orgaoPerfil.setUsuario(entity);
+                orgaoPerfilRepository.persist(orgaoPerfil);
+            }
+        }
 
         return new UsuarioResponseDTO(entity);
     }
 
     @Override
     @Transactional
-    public UsuarioResponseDTO update(Long id, UsuarioDTO usuarioDTO) throws ConstraintViolationException {
-        validar(usuarioDTO);
+    public UsuarioResponseDTO update(Long id, UsuarioUpdateDTO usuarioDTO) throws ConstraintViolationException {
+        validarUpdate(usuarioDTO);
 
         Usuario entity = repository.findById(id);
 
         entity.setNome(usuarioDTO.nome());
         entity.setCpf(usuarioDTO.cpf());
         entity.setLogin(usuarioDTO.login());
-        entity.setSenha(hashService.getHashSenha(usuarioDTO.senha()));
+
+        if (usuarioDTO.senha() != null && usuarioDTO.senha() != "") {
+            entity.setSenha(hashService.getHashSenha(usuarioDTO.senha()));
+        }
+
         entity.setNivelSigilo(usuarioDTO.nivelSigilo());
+
+        if (usuarioDTO.orgaosPerfis() != null) {
+            List<OrgaoPerfil> lotacoes = this.orgaoPerfilRepository.findByUsuario(entity.getId());
+            List<OrgaoPerfilDTO> orgaosPerfisDTO = usuarioDTO.orgaosPerfis();
+
+            List<OrgaoPerfil> orgaoPerfilsToDelete = lotacoes.stream()
+                    .filter(lotacao -> orgaosPerfisDTO.stream()
+                            .noneMatch(dto -> dto.idPerfil().equals(lotacao.getPerfil().getId())
+                                    && dto.idOrgao().equals(lotacao.getOrgao().getId())))
+                    .collect(Collectors.toList());
+
+            for (OrgaoPerfilDTO orgaoPerfilDTO : orgaosPerfisDTO) {
+                OrgaoPerfil orgaoPerfilExistente = this.orgaoPerfilRepository.findByPerfilOrgaoUsuario(Perfil.valueOf(orgaoPerfilDTO.idPerfil()), orgaoPerfilDTO.idOrgao(), entity.getId());
+
+                if (orgaoPerfilExistente == null) {
+                    OrgaoPerfil orgaoPerfil = new OrgaoPerfil();
+                    orgaoPerfil.setOrgao(orgaoRepository.findById(orgaoPerfilDTO.idOrgao()));
+                    orgaoPerfil.setPerfil(Perfil.valueOf(orgaoPerfilDTO.idPerfil()));
+                    orgaoPerfil.setUsuario(entity);
+                    orgaoPerfilRepository.persist(orgaoPerfil);
+                }
+            }
+
+            if (!orgaoPerfilsToDelete.isEmpty()) {
+                for (OrgaoPerfil orgaoPerfil : orgaoPerfilsToDelete) {
+                    this.orgaoPerfilRepository.delete(orgaoPerfil);
+                }
+            }
+        }
 
         return new UsuarioResponseDTO(entity);
     }
@@ -118,6 +156,13 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     private void validar(UsuarioDTO usuarioDTO) throws ConstraintViolationException {
         Set<ConstraintViolation<UsuarioDTO>> violations = validator.validate(usuarioDTO);
+
+        if (!violations.isEmpty())
+            throw new ConstraintViolationException(violations);
+    }
+
+    private void validarUpdate(UsuarioUpdateDTO usuarioDTO) throws ConstraintViolationException {
+        Set<ConstraintViolation<UsuarioUpdateDTO>> violations = validator.validate(usuarioDTO);
 
         if (!violations.isEmpty())
             throw new ConstraintViolationException(violations);

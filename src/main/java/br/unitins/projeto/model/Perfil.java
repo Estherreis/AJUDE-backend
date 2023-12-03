@@ -8,7 +8,7 @@ public enum Perfil {
     ASSISTENTE (2, "Assistente"),
     LOGADO (3, "Logado");
 
-    private int id;
+    private Integer id;
     private String label;
 
     Perfil(int id, String label) {
@@ -16,7 +16,7 @@ public enum Perfil {
         this.label = label;
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 

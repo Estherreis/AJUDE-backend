@@ -1,12 +1,12 @@
 package br.unitins.projeto.dto.usuario;
 
-import java.util.List;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-public record UsuarioDTO(
+import java.util.List;
+
+public record UsuarioUpdateDTO (
 
         @NotBlank(message = "O nome deve ser informado.")
         @Size(max = 80, message = "O nome deve possuir no máximo 80 caracteres.")
@@ -20,7 +20,6 @@ public record UsuarioDTO(
         @Size(max = 20, message = "O login deve possuir no máximo 20 caracteres.")
         String login,
 
-        @NotBlank(message = "A senha deve ser informada.")
         String senha,
 
         Integer nivelSigilo,
