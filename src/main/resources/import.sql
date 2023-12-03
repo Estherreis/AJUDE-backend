@@ -290,13 +290,13 @@ insert into orgao(nome, sigla, id_municipio, ativo) values ('Juízo da 1ª Vara 
 insert into orgao(nome, sigla, id_municipio, ativo) values ('uízo da 1ª Vara Cível de Araguaína', 'JVCA', 2, true);
 
 INSERT INTO endereco (id_municipio, id_estado, bairro, logradouro, numero)
-VALUES (1, 1, 'Plano Dir. Sul', '1003 Sul', 1);
+VALUES (1, 1, 'Plano Dir. Sul', '1003 Sul', '1');
 INSERT INTO endereco (id_municipio, id_estado, bairro, logradouro, numero)
-VALUES (1, 1, 'Centro', 'Rua Principal', 10);
+VALUES (1, 1, 'Centro', 'Rua Principal', '10');
 INSERT INTO endereco (id_municipio, id_estado, bairro, logradouro, numero)
-VALUES (2, 1, 'Bela Vista', 'Avenida Secundária', 25);
+VALUES (2, 1, 'Bela Vista', 'Avenida Secundária', '25');
 INSERT INTO endereco (id_municipio, id_estado, bairro, logradouro, numero)
-VALUES (1, 1, 'Jardim das Flores', 'Rua das Flores', 7);
+VALUES (1, 1, 'Jardim das Flores', 'Rua das Flores', '7');
 
 INSERT INTO beneficiario (nome, cpf, rg, cpfPai, nis, dataNascimento, id_endereco)
 VALUES ('Esther', '11111111111', '1111111', '22222222222', '111111', '2004-08-23', 1);

@@ -9,7 +9,7 @@ public record EnderecoResponseDTO(
     Long id,
     MunicipioResponseDTO municipio,
     EstadoResponseDTO estado,
-    Long numero,
+    String numero,
     String bairro,
     String logradouro,
     String complemento

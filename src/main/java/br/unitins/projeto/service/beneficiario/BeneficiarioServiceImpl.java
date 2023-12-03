@@ -1,10 +1,5 @@
 package br.unitins.projeto.service.beneficiario;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
 import br.unitins.projeto.dto.beneficiario.BeneficiarioDTO;
 import br.unitins.projeto.dto.beneficiario.BeneficiarioResponseDTO;
 import br.unitins.projeto.model.Beneficiario;
@@ -23,8 +18,13 @@ import jakarta.validation.Valid;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.NotFoundException;
 
+import java.util.Comparator;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @ApplicationScoped
-public class BeneficiarioServiceImpl implements BeneficiarioService{
+public class BeneficiarioServiceImpl implements BeneficiarioService {
 
     @Inject
     BeneficiarioRepository beneficiarioRepository;
@@ -75,16 +75,18 @@ public class BeneficiarioServiceImpl implements BeneficiarioService{
         entity.setCpfPai(beneficiarioDTO.cpfPais());
         entity.setRg(beneficiarioDTO.rg());
 
-        
-        endereco.setMunicipio(municipioRepository.findById(beneficiarioDTO.endereco().idMunicipio()));
-        endereco.setEstado(estadoRepository.findById(endereco.getMunicipio().getEstado().getId()));
-        endereco.setBairro(beneficiarioDTO.endereco().bairro());
-        endereco.setComplemento(beneficiarioDTO.endereco().complemento());
-        endereco.setNumero(beneficiarioDTO.endereco().numero());
-        endereco.setLogradouro(beneficiarioDTO.endereco().logradouro());
-        entity.setEndereco(endereco);
+        if (beneficiarioDTO.endereco() != null) {
+            endereco.setMunicipio(municipioRepository.findById(beneficiarioDTO.endereco().idMunicipio()));
+            endereco.setEstado(estadoRepository.findById(endereco.getMunicipio().getEstado().getId()));
+            endereco.setBairro(beneficiarioDTO.endereco().bairro());
+            endereco.setComplemento(beneficiarioDTO.endereco().complemento());
+            endereco.setNumero(beneficiarioDTO.endereco().numero());
+            endereco.setLogradouro(beneficiarioDTO.endereco().logradouro());
+            entity.setEndereco(endereco);
 
-        enderecoRepository.persist(endereco);
+            enderecoRepository.persist(endereco);
+        }
+
         beneficiarioRepository.persist(entity);
 
         return new BeneficiarioResponseDTO(entity);
@@ -104,15 +106,17 @@ public class BeneficiarioServiceImpl implements BeneficiarioService{
         entity.setDataNascimento(beneficiarioDTO.dataNascimento());
         entity.setCpfPai(beneficiarioDTO.cpfPais());
 
-        endereco.setMunicipio(municipioRepository.findById(beneficiarioDTO.endereco().idMunicipio()));
-        endereco.setEstado(estadoRepository.findById(entity.getEndereco().getEstado().getId()));
-        endereco.setBairro(entity.getEndereco().getBairro());
-        endereco.setComplemento(entity.getEndereco().getComplemento());
-        endereco.setNumero(entity.getEndereco().getNumero());
-        endereco.setLogradouro(entity.getEndereco().getLogradouro());
-        entity.setEndereco(endereco);
+        if (beneficiarioDTO.endereco() != null) {
+            endereco.setMunicipio(municipioRepository.findById(beneficiarioDTO.endereco().idMunicipio()));
+            endereco.setEstado(estadoRepository.findById(endereco.getMunicipio().getEstado().getId()));
+            endereco.setBairro(beneficiarioDTO.endereco().bairro());
+            endereco.setComplemento(beneficiarioDTO.endereco().complemento());
+            endereco.setNumero(beneficiarioDTO.endereco().numero());
+            endereco.setLogradouro(beneficiarioDTO.endereco().logradouro());
+            entity.setEndereco(endereco);
 
-        enderecoRepository.persist(endereco);
+            enderecoRepository.persist(endereco);
+        }
 
         beneficiarioRepository.persist(entity);
 
@@ -143,12 +147,12 @@ public class BeneficiarioServiceImpl implements BeneficiarioService{
 
         List<Beneficiario> list = beneficiarioRepository.findByNome(nome);
         return list.stream().map(BeneficiarioResponseDTO::new).collect(Collectors.toList());
-    
+
     }
 
     @Override
     public List<BeneficiarioResponseDTO> findByCpf(String cpf) {
-       
+
         List<Beneficiario> list = beneficiarioRepository.findByCPF(cpf);
         return list.stream().map(BeneficiarioResponseDTO::new).collect(Collectors.toList());
     }
@@ -169,4 +173,5 @@ public class BeneficiarioServiceImpl implements BeneficiarioService{
     public Long countByNomeOuCpf(String nomeOuCpf) {
         return beneficiarioRepository.findByNomeOrCpf(nomeOuCpf).count();
     }
+
 }

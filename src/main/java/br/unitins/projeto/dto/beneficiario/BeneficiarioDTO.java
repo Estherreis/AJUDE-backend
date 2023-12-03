@@ -1,12 +1,11 @@
 package br.unitins.projeto.dto.beneficiario;
 
-import java.time.LocalDate;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import br.unitins.projeto.dto.endereco.EnderecoDTO;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+
+import java.time.LocalDate;
 
 public record BeneficiarioDTO(
 
