@@ -19,6 +19,7 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Valid;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.NotFoundException;
 
@@ -64,7 +65,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     @Transactional
-    public UsuarioResponseDTO create(UsuarioDTO usuarioDTO) throws ConstraintViolationException {
+    public UsuarioResponseDTO create(@Valid UsuarioDTO usuarioDTO) throws ConstraintViolationException {
         validar(usuarioDTO);
 
         Usuario entity = new Usuario();
@@ -91,7 +92,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     @Transactional
-    public UsuarioResponseDTO update(Long id, UsuarioUpdateDTO usuarioDTO) throws ConstraintViolationException {
+    public UsuarioResponseDTO update(Long id, @Valid UsuarioUpdateDTO usuarioDTO) throws ConstraintViolationException {
         validarUpdate(usuarioDTO);
 
         Usuario entity = repository.findById(id);
@@ -140,7 +141,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     @Transactional
-    public UsuarioResponseDTO adicionarUsuario(Long id, OrgaoPerfilDTO orgaoPerfilDTO)
+    public UsuarioResponseDTO adicionarUsuario(Long id, @Valid OrgaoPerfilDTO orgaoPerfilDTO)
             throws ConstraintViolationException {
 
         Usuario entity = repository.findById(id);

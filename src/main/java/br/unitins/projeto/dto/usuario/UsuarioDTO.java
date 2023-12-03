@@ -1,10 +1,10 @@
 package br.unitins.projeto.dto.usuario;
 
-import java.util.List;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+
+import java.util.List;
 
 public record UsuarioDTO(
 
@@ -12,8 +12,8 @@ public record UsuarioDTO(
         @Size(max = 80, message = "O nome deve possuir no máximo 80 caracteres.")
         String nome,
 
-        @NotBlank(message = "O cpf deve ser informado.")
-        @Size(max = 11, min = 11, message = "O cpf deve possuir 11 caracteres.")
+        @NotBlank(message = "O CPF deve ser informado.")
+        @Size(max = 11, min = 11, message = "O CPF deve possuir 11 caracteres.")
         String cpf,
 
         @NotBlank(message = "O login deve ser informado.")

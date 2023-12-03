@@ -7,6 +7,7 @@ import br.unitins.projeto.dto.usuario.UsuarioLotacoesResponseDTO;
 import br.unitins.projeto.dto.usuario.UsuarioResponseDTO;
 import br.unitins.projeto.dto.usuario.UsuarioUpdateDTO;
 import br.unitins.projeto.model.Usuario;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -16,13 +17,13 @@ public interface UsuarioService {
 
     UsuarioResponseDTO findById(Long id);
 
-    UsuarioResponseDTO create(UsuarioDTO productDTO);
+    UsuarioResponseDTO create(@Valid UsuarioDTO productDTO);
 
-    UsuarioResponseDTO update(Long id, UsuarioUpdateDTO productDTO);
+    UsuarioResponseDTO update(Long id, @Valid UsuarioUpdateDTO productDTO);
 
     UsuarioResponseDTO alterarSituacao(Long id, Boolean situacao);
 
-    UsuarioResponseDTO adicionarUsuario(Long id, OrgaoPerfilDTO orgaoPerfilDTO);
+    UsuarioResponseDTO adicionarUsuario(Long id, @Valid OrgaoPerfilDTO orgaoPerfilDTO);
 
     List<OrgaoPerfilResponseDTO> getLotacoesUsuario(Long id);
 
