@@ -50,22 +50,10 @@ public class AtendimentoResource {
     @RolesAllowed({"Administrador", "Assistente"})
     public Response insert(AtendimentoDTO dto) {
         LOG.infof("Inserindo um atendimento: %s", dto.descricao());
-        Result result = null;
 
-        try {
-            AtendimentoResponseDTO response = service.create(dto);
-            LOG.infof("Atendimento (%d) criado com sucesso.", response.id());
-            return Response.status(Response.Status.CREATED).entity(response).build();
-        } catch (ConstraintViolationException e) {
-            LOG.error("Erro ao incluir um atendimento.");
-            LOG.debug(e.getMessage());
-            result = new Result(e.getConstraintViolations());
-        } catch (Exception e) {
-            LOG.fatal("Erro sem identificacao: " + e.getMessage());
-            result = new Result(e.getMessage(), false);
-        }
-
-        return Response.status(Response.Status.NOT_FOUND).entity(result).build();
+        AtendimentoResponseDTO response = service.create(dto);
+        LOG.infof("Atendimento (%d) criado com sucesso.", response.id());
+        return Response.status(Response.Status.CREATED).entity(response).build();
     }
 
     @PUT

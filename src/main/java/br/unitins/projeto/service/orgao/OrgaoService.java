@@ -2,6 +2,7 @@ package br.unitins.projeto.service.orgao;
 
 import br.unitins.projeto.dto.orgao.OrgaoDTO;
 import br.unitins.projeto.dto.orgao.OrgaoResponseDTO;
+import jakarta.validation.Valid;
 
 import java.util.List;
 
@@ -13,9 +14,9 @@ public interface OrgaoService {
 
     OrgaoResponseDTO findById(Long id);
 
-    OrgaoResponseDTO create(OrgaoDTO productDTO);
+    OrgaoResponseDTO create(@Valid OrgaoDTO productDTO);
 
-    OrgaoResponseDTO update(Long id, OrgaoDTO productDTO);
+    OrgaoResponseDTO update(Long id, @Valid OrgaoDTO productDTO);
 
     OrgaoResponseDTO alterarSituacao(Long id, Boolean situacao);
 

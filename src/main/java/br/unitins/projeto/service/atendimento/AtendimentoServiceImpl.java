@@ -15,6 +15,7 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Valid;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.NotFoundException;
 import org.eclipse.microprofile.jwt.JsonWebToken;
@@ -72,7 +73,7 @@ public class AtendimentoServiceImpl implements AtendimentoService {
 
     @Override
     @Transactional
-    public AtendimentoResponseDTO create(AtendimentoDTO atendimentoDTO) throws ConstraintViolationException {
+    public AtendimentoResponseDTO create(@Valid AtendimentoDTO atendimentoDTO) throws ConstraintViolationException {
         validar(atendimentoDTO);
 
         String idOrgao = jwt.getClaim("orgao").toString();
@@ -95,7 +96,7 @@ public class AtendimentoServiceImpl implements AtendimentoService {
 
     @Override
     @Transactional
-    public AtendimentoResponseDTO update(Long id, AtendimentoUpdateDTO atendimentoDTO)
+    public AtendimentoResponseDTO update(Long id, @Valid AtendimentoUpdateDTO atendimentoDTO)
             throws ConstraintViolationException {
         Atendimento entity = repository.findById(id);
 

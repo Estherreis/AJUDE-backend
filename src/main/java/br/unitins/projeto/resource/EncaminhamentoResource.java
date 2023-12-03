@@ -49,22 +49,10 @@ public class EncaminhamentoResource {
     @RolesAllowed({"Administrador", "Assistente"})
     public Response insert(EncaminhamentoDTO dto) {
         LOG.infof("Inserindo um encaminhamento: %s", dto.motivo());
-        Result result = null;
 
-        try {
-            EncaminhamentoResponseDTO response = service.create(dto);
-            LOG.infof("Encaminhamento (%d) criado com sucesso.", response.id());
-            return Response.status(Response.Status.CREATED).entity(response).build();
-        } catch (ConstraintViolationException e) {
-            LOG.error("Erro ao incluir um encaminhamento.");
-            LOG.debug(e.getMessage());
-            result = new Result(e.getConstraintViolations());
-        } catch (Exception e) {
-            LOG.fatal("Erro sem identificacao: " + e.getMessage());
-            result = new Result(e.getMessage(), false);
-        }
-
-        return Response.status(Response.Status.NOT_FOUND).entity(result).build();
+        EncaminhamentoResponseDTO response = service.create(dto);
+        LOG.infof("Encaminhamento (%d) criado com sucesso.", response.id());
+        return Response.status(Response.Status.CREATED).entity(response).build();
     }
 
 }

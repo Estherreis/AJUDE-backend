@@ -61,44 +61,20 @@ public class OrgaoResource {
     @POST
     public Response insert(OrgaoDTO dto) {
         LOG.infof("Inserindo um órgão: %s", dto.nome());
-        Result result = null;
 
-        try {
-            OrgaoResponseDTO response = service.create(dto);
-            LOG.infof("Órgão (%d) criado com sucesso.", response.id());
-            return Response.status(Response.Status.CREATED).entity(response).build();
-        } catch (ConstraintViolationException e) {
-            LOG.error("Erro ao incluir um órgão.");
-            LOG.debug(e.getMessage());
-            result = new Result(e.getConstraintViolations());
-        } catch (Exception e) {
-            LOG.fatal("Erro sem identificacao: " + e.getMessage());
-            result = new Result(e.getMessage(), false);
-        }
-
-        return Response.status(Response.Status.NOT_FOUND).entity(result).build();
+        OrgaoResponseDTO response = service.create(dto);
+        LOG.infof("Órgão (%d) criado com sucesso.", response.id());
+        return Response.status(Response.Status.CREATED).entity(response).build();
     }
 
     @PUT
     @Path("/{id}")
     public Response update(@PathParam("id") Long id, OrgaoDTO dto) {
         LOG.infof("Alterando um órgão: %s", dto.nome());
-        Result result = null;
 
-        try {
-            OrgaoResponseDTO response = service.update(id, dto);
-            LOG.infof("Órgão (%d) alterado com sucesso.", response.id());
-            return Response.ok(response).build();
-        } catch (ConstraintViolationException e) {
-            LOG.error("Erro ao alterar um órgão.");
-            LOG.debug(e.getMessage());
-            result = new Result(e.getConstraintViolations());
-        } catch (Exception e) {
-            LOG.fatal("Erro sem identificacao: " + e.getMessage());
-            result = new Result(e.getMessage(), false);
-        }
-
-        return Response.status(Response.Status.NOT_FOUND).entity(result).build();
+        OrgaoResponseDTO response = service.update(id, dto);
+        LOG.infof("Órgão (%d) alterado com sucesso.", response.id());
+        return Response.ok(response).build();
     }
 
     @DELETE

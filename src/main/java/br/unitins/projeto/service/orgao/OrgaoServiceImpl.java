@@ -11,6 +11,7 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Valid;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.NotFoundException;
 
@@ -55,7 +56,7 @@ public class OrgaoServiceImpl implements OrgaoService {
 
     @Override
     @Transactional
-    public OrgaoResponseDTO create(OrgaoDTO orgaoDTO) throws ConstraintViolationException {
+    public OrgaoResponseDTO create(@Valid OrgaoDTO orgaoDTO) throws ConstraintViolationException {
         validar(orgaoDTO);
 
         Orgao entity = new Orgao();
@@ -70,7 +71,7 @@ public class OrgaoServiceImpl implements OrgaoService {
 
     @Override
     @Transactional
-    public OrgaoResponseDTO update(Long id, OrgaoDTO orgaoDTO) throws ConstraintViolationException {
+    public OrgaoResponseDTO update(Long id, @Valid OrgaoDTO orgaoDTO) throws ConstraintViolationException {
         validar(orgaoDTO);
 
         Orgao entity = repository.findById(id);

@@ -44,22 +44,10 @@ public class MovimentacaoResource {
     @RolesAllowed({"Administrador", "Assistente"})
     public Response insert(MovimentacaoDTO dto) {
         LOG.infof("Inserindo um movimentacaos: %s", dto.tituloMovimentacao());
-        Result result = null;
 
-        try {
-            MovimentacaoResponseDTO response = movimentacaoService.lancarMovimentacao(dto);
-            LOG.infof("Movimentacao (%d) criada com sucesso.", response.id());
-            return Response.status(Status.CREATED).entity(response).build();
-        } catch (ConstraintViolationException e) {
-            LOG.error("Erro ao incluir uma movimentacao.");
-            LOG.debug(e.getMessage());
-            result = new Result(e.getConstraintViolations());
-        } catch (Exception e) {
-            LOG.fatal("Erro sem identificacao: " + e.getMessage());
-            result = new Result(e.getMessage(), false);
-        }
-
-        return Response.status(Status.NOT_FOUND).entity(result).build();
+        MovimentacaoResponseDTO response = movimentacaoService.lancarMovimentacao(dto);
+        LOG.infof("Movimentacao (%d) criada com sucesso.", response.id());
+        return Response.status(Status.CREATED).entity(response).build();
     }
 
     @GET

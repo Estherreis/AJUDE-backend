@@ -15,6 +15,7 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Valid;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.NotFoundException;
 import org.eclipse.microprofile.jwt.JsonWebToken;
@@ -63,7 +64,7 @@ public class EncaminhamentoServiceImpl implements EncaminhamentoService {
 
     @Override
     @Transactional
-    public EncaminhamentoResponseDTO create(EncaminhamentoDTO encaminhamentoDTO) throws ConstraintViolationException {
+    public EncaminhamentoResponseDTO create(@Valid EncaminhamentoDTO encaminhamentoDTO) throws ConstraintViolationException {
         validar(encaminhamentoDTO);
 
         Encaminhamento entity = new Encaminhamento();

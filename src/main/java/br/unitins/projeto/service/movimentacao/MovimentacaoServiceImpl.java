@@ -12,6 +12,7 @@ import br.unitins.projeto.service.usuario.UsuarioService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import java.time.LocalDateTime;
@@ -38,7 +39,7 @@ public class MovimentacaoServiceImpl implements MovimentacaoService {
 
     @Override
     @Transactional
-    public MovimentacaoResponseDTO lancarMovimentacao(MovimentacaoDTO movimentacaoDTO) {
+    public MovimentacaoResponseDTO lancarMovimentacao(@Valid MovimentacaoDTO movimentacaoDTO) {
 
         Movimentacao entity = new Movimentacao();
         LocalDateTime now = LocalDateTime.now();

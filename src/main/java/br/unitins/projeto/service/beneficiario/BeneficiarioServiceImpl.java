@@ -17,6 +17,7 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Valid;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.NotFoundException;
 
@@ -59,7 +60,7 @@ public class BeneficiarioServiceImpl implements BeneficiarioService{
 
     @Override
     @Transactional
-    public BeneficiarioResponseDTO create(BeneficiarioDTO beneficiarioDTO) {
+    public BeneficiarioResponseDTO create(@Valid BeneficiarioDTO beneficiarioDTO) {
         validar(beneficiarioDTO);
 
         Beneficiario entity = new Beneficiario();
@@ -89,7 +90,7 @@ public class BeneficiarioServiceImpl implements BeneficiarioService{
 
     @Override
     @Transactional
-    public BeneficiarioResponseDTO update(Long id, BeneficiarioDTO beneficiarioDTO) {
+    public BeneficiarioResponseDTO update(Long id, @Valid BeneficiarioDTO beneficiarioDTO) {
         validar(beneficiarioDTO);
 
         Beneficiario entity = beneficiarioRepository.findById(id);

@@ -53,22 +53,10 @@ public class BeneficiarioResource {
     @RolesAllowed({"Administrador", "Assistente"})
     public Response insert(BeneficiarioDTO dto) {
         LOG.infof("Inserindo um beneficiarios: %s", dto.nome());
-        Result result = null;
 
-        try {
-            BeneficiarioResponseDTO response = service.create(dto);
-            LOG.infof("Beneficiario (%d) criado com sucesso.", response.id());
-            return Response.status(Status.CREATED).entity(response).build();
-        } catch (ConstraintViolationException e) {
-            LOG.error("Erro ao incluir um beneficiario.");
-            LOG.debug(e.getMessage());
-            result = new Result(e.getConstraintViolations());
-        } catch (Exception e) {
-            LOG.fatal("Erro sem identificacao: " + e.getMessage());
-            result = new Result(e.getMessage(), false);
-        }
-
-        return Response.status(Status.NOT_FOUND).entity(result).build();
+        BeneficiarioResponseDTO response = service.create(dto);
+        LOG.infof("Beneficiario (%d) criado com sucesso.", response.id());
+        return Response.status(Status.CREATED).entity(response).build();
     }
 
     @PUT
@@ -76,22 +64,10 @@ public class BeneficiarioResource {
     @RolesAllowed({"Administrador", "Assistente"})
     public Response update(@PathParam("id") Long id, BeneficiarioDTO dto) {
         LOG.infof("Alterando um beneficiarios: %s", dto.nome());
-        Result result = null;
 
-        try {
-            BeneficiarioResponseDTO response = service.update(id, dto);
-            LOG.infof("Beneficiario (%d) alterado com sucesso.", response.id());
-            return Response.ok(response).build();
-        } catch (ConstraintViolationException e) {
-            LOG.error("Erro ao alterar um beneficiario.");
-            LOG.debug(e.getMessage());
-            result = new Result(e.getConstraintViolations());
-        } catch (Exception e) {
-            LOG.fatal("Erro sem identificacao: " + e.getMessage());
-            result = new Result(e.getMessage(), false);
-        }
-
-        return Response.status(Status.NOT_FOUND).entity(result).build();
+        BeneficiarioResponseDTO response = service.update(id, dto);
+        LOG.infof("Beneficiario (%d) alterado com sucesso.", response.id());
+        return Response.ok(response).build();
     }
 
     @DELETE
