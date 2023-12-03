@@ -5,10 +5,14 @@ import br.unitins.projeto.model.Orgao;
 import br.unitins.projeto.model.OrgaoPerfil;
 import br.unitins.projeto.model.Perfil;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 public record OrgaoPerfilResponseDTO(
         Long id,
         Perfil perfil,
         OrgaoResponseDTO orgao) {
+
     public OrgaoPerfilResponseDTO(OrgaoPerfil entity) {
         this(entity.getId(), entity.getPerfil(), gerarOrgaoResponseDTO(entity.getOrgao()));
     }

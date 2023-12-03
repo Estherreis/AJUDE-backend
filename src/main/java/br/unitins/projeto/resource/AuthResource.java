@@ -23,6 +23,8 @@ import jakarta.ws.rs.core.Response.Status;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.logging.Logger;
 
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 @Path("/auth")
@@ -59,6 +61,8 @@ public class AuthResource {
         if (usuario == null) {
             return Response.status(Status.NO_CONTENT)
                     .entity("Usuario não encontrado").build();
+        } else {
+            usuario.setPerfil(new HashSet<>(Set.of(Perfil.LOGADO)));
         }
 
         return Response.ok()
@@ -68,6 +72,7 @@ public class AuthResource {
 
     @GET
     @Path("/lotacoes")
+    @RolesAllowed({"Logado"})
     public List<OrgaoPerfilResponseDTO> getLotacoes() {
         String login = jwt.getSubject();
         Usuario usuario = usuarioService.findByLogin(login);
@@ -76,14 +81,17 @@ public class AuthResource {
 
     @POST
     @Path("/lotacoes")
+    @RolesAllowed({"Logado"})
     public Response setLotacao(OrgaoPerfilDTO orgaoPerfil) {
         String login = jwt.getSubject();
         Usuario usuario = usuarioService.findByLogin(login);
 
+        Set<Perfil> perfil = Collections.singleton(Perfil.valueOf(orgaoPerfil.idPerfil()));
+
         return Response.ok()
                 .header("Authorization", tokenService.generateJwt(
                         orgaoRepository.findById(orgaoPerfil.idOrgao()),
-                        Perfil.valueOf(orgaoPerfil.idPerfil()),
+                        perfil,
                         usuario))
                 .build();
     }

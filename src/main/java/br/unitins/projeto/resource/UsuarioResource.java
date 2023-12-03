@@ -74,7 +74,7 @@ public class UsuarioResource {
     }
 
     @POST
-    @PermitAll
+    @RolesAllowed({ "Administrador" })
     public Response insert(UsuarioDTO dto) {
         LOG.infof("Inserindo um usuário: %s", dto.nome());
         Result result = null;
