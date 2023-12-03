@@ -11,6 +11,10 @@ public interface BeneficiarioService {
 
     List<BeneficiarioResponseDTO> getAll();
 
+    List<BeneficiarioResponseDTO> findByNomeOuCpf(String nomeOuCpf, int page, int pageSize);
+
+    Long countByNomeOuCpf(String nomeOuCpf);
+
     BeneficiarioResponseDTO findById(Long id);
 
     BeneficiarioResponseDTO create(@Valid BeneficiarioDTO productDTO);
