@@ -312,3 +312,7 @@ VALUES ('Unitins', '12345678791', 'unitins', 'TRwn0XU29Gwl2sagG00bvjrNJvLuYo+dbO
         4, true);
 
 INSERT INTO orgao_perfil (perfil, id_orgao, id_usuario) VALUES (1, 1, 1);
+
+INSERT INTO atendimento (id_orgao, id_beneficiario, data_cadastro, id_usuario_inclusao, descricao, tipo_beneficio, situacao_atendimento)
+    VALUES (1, 1, '2023-12-01', 1, 'Durante o cadastro do auxílio moradia para a família Melo, constatou-se que residem em uma casa de três quartos na Rua das Flores, número 123, bairro Esperança, Cidade Feliz. Embora a propriedade esteja em bom estado, enfrentam inundações sazonais, preocupando a segurança da família. A Sra. Melo pediu melhorias estruturais urgentes para proteger seus três filhos pequenos. Este cadastro é fundamental para um plano de assistência que melhore as condições habitacionais e a segurança da família.', 'Auxílio Moradia', 1),
+        (1, 1, '2023-10-01', 1, 'Durante o cadastro do auxílio moradia para a família Melo, constatou-se que residem em uma casa de três quartos na Rua das Flores, número 123, bairro Esperança, Cidade Feliz. Embora a propriedade esteja em bom estado, enfrentam inundações sazonais, preocupando a segurança da família. A Sra. Melo pediu melhorias estruturais urgentes para proteger seus três filhos pequenos. Este cadastro é fundamental para um plano de assistência que melhore as condições habitacionais e a segurança da família.', 'Auxílio Moradia', 2);

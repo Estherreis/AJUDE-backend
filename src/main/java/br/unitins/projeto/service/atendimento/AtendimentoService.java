@@ -13,7 +13,7 @@ public interface AtendimentoService {
 
     AtendimentoResponseDTO findById(Long id);
 
-    List<AtendimentoResponseDTO> findByBeneficiario(Long idBeneficiario);
+    List<AtendimentoResponseDTO> findByBeneficiario(Long idBeneficiario, int page, int pageSize);
 
     AtendimentoResponseDTO create(@Valid AtendimentoDTO productDTO);
 
@@ -23,6 +23,6 @@ public interface AtendimentoService {
 
     void delete(Long id);
 
-    Long count();
+    Long countByBeneficiario(Long idBeneficiario);
 
 }
