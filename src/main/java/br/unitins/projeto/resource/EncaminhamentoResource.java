@@ -3,7 +3,6 @@ package br.unitins.projeto.resource;
 import br.unitins.projeto.dto.encaminhamento.EncaminhamentoDTO;
 import br.unitins.projeto.dto.encaminhamento.EncaminhamentoResponseDTO;
 import br.unitins.projeto.service.encaminhamento.EncaminhamentoService;
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DefaultValue;
@@ -31,15 +30,15 @@ public class EncaminhamentoResource {
 
     @GET
     @Path("/{id}")
-    @RolesAllowed({"Administrador", "Assistente"})
+//    @RolesAllowed({"Administrador", "Assistente"})
     public EncaminhamentoResponseDTO findById(@PathParam("id") Long id) {
-        LOG.info("Buscando um atendimento pelo id.");
+        LOG.info("Buscando um enconheminhamento pelo id.");
         return service.findById(id);
     }
 
     @GET
-    @Path("/{idAtendimento}")
-    @RolesAllowed({"Administrador", "Assistente"})
+    @Path("/atendimento/{idAtendimento}")
+//    @RolesAllowed({"Administrador", "Assistente"})
     public List<EncaminhamentoResponseDTO> findByAtendimento(@PathParam("idAtendimento") Long idAtendimento,
                                                              @QueryParam("page") @DefaultValue("0") int page,
                                                              @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
@@ -48,13 +47,19 @@ public class EncaminhamentoResource {
     }
 
     @POST
-    @RolesAllowed({"Administrador", "Assistente"})
+//    @RolesAllowed({"Administrador", "Assistente"})
     public Response insert(EncaminhamentoDTO dto) {
         LOG.infof("Inserindo um encaminhamento: %s", dto.motivo());
 
         EncaminhamentoResponseDTO response = service.create(dto);
         LOG.infof("Encaminhamento (%d) criado com sucesso.", response.id());
         return Response.status(Response.Status.CREATED).entity(response).build();
+    }
+
+    @GET
+    @Path("/atendimento/{idAtendimento}/count")
+    public Long count(@PathParam("idAtendimento") Long idAtendimento) {
+        return service.countByAtendimento(idAtendimento);
     }
 
 }

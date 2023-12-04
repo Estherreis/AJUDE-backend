@@ -77,9 +77,13 @@ public class EncaminhamentoServiceImpl implements EncaminhamentoService {
         Atendimento atendimento = atendimentoRepository.findById(encaminhamentoDTO.idAtendimento());
         Orgao orgaoDestino = orgaoRepository.findById(encaminhamentoDTO.idOrgao());
 
-        String login = jwt.getSubject();
+//        String login = jwt.getSubject();
+//        Usuario usuario = usuarioService.findByLogin(login);
+//        Orgao orgaoUsuarioLogado = orgaoRepository.findById(Long.valueOf(jwt.getClaim("orgao").toString()));
+
+        String login = "unitins";
         Usuario usuario = usuarioService.findByLogin(login);
-        Orgao orgaoUsuarioLogado = orgaoRepository.findById(Long.valueOf(jwt.getClaim("orgao").toString()));
+        Orgao orgaoUsuarioLogado = orgaoRepository.findById(1L);
 
         entity.setOrgaoAtual(atendimento.getOrgao());
         entity.setOrgaoDestino(orgaoDestino);
@@ -102,4 +106,10 @@ public class EncaminhamentoServiceImpl implements EncaminhamentoService {
         if (!violations.isEmpty())
             throw new ConstraintViolationException(violations);
     }
+
+    @Override
+    public Long countByAtendimento(Long idAtendimento) {
+        return this.repository.findByAtendimento(idAtendimento).count();
+    }
+
 }

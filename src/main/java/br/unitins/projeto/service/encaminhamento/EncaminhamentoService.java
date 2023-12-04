@@ -14,4 +14,6 @@ public interface EncaminhamentoService {
 
     EncaminhamentoResponseDTO create(@Valid EncaminhamentoDTO productDTO);
 
+    Long countByAtendimento(Long idAtendimento);
+
 }
