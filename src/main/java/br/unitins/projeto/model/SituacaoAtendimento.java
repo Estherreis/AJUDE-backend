@@ -1,8 +1,11 @@
 package br.unitins.projeto.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
+@JsonFormat(shape = JsonFormat.Shape.OBJECT)
 public enum SituacaoAtendimento {
-    EM_ANDAMENTO (1, "Em Andamento"),
-    FINALIZADO (2, "Finalizado");
+    EM_ANDAMENTO(1, "Em Andamento"),
+    FINALIZADO(2, "Finalizado");
 
     private int id;
     private String label;

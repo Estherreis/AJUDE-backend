@@ -8,18 +8,16 @@ import jakarta.persistence.PrimaryKeyJoinColumn;
 
 @Entity
 @PrimaryKeyJoinColumn(name = "id")
-public class Movimentacao extends DefaultEntity{
-    
+public class Movimentacao extends DefaultEntity {
+
     private String tituloMovimentacao;
 
     @ManyToOne
     private Usuario usuarioAutor;
 
     private String descricao;
-    
-    private String nomeDocumento;
 
-    //data inclusão já está no default entity
+    private String nomeDocumento;
 
     @ManyToOne
     @JoinColumn(name = "id_atendimento", nullable = false)
@@ -49,7 +47,7 @@ public class Movimentacao extends DefaultEntity{
         this.nomeDocumento = nomeDocumento;
     }
 
-    
+
     public Usuario getUsuarioAutor() {
         return usuarioAutor;
     }
@@ -59,7 +57,7 @@ public class Movimentacao extends DefaultEntity{
     }
 
 
-        public String getTituloMovimentacao() {
+    public String getTituloMovimentacao() {
         return tituloMovimentacao;
     }
 

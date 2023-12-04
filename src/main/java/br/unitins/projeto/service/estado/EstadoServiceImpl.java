@@ -1,9 +1,9 @@
 package br.unitins.projeto.service.estado;
 
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-
+import br.unitins.projeto.dto.estado.EstadoDTO;
+import br.unitins.projeto.dto.estado.EstadoResponseDTO;
+import br.unitins.projeto.model.Estado;
+import br.unitins.projeto.repository.EstadoRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -12,10 +12,9 @@ import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.NotFoundException;
 
-import br.unitins.projeto.dto.estado.EstadoDTO;
-import br.unitins.projeto.dto.estado.EstadoResponseDTO;
-import br.unitins.projeto.model.Estado;
-import br.unitins.projeto.repository.EstadoRepository;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class EstadoServiceImpl implements EstadoService {
@@ -26,10 +25,17 @@ public class EstadoServiceImpl implements EstadoService {
     @Inject
     Validator validator;
 
+
     @Override
     public List<EstadoResponseDTO> getAll() {
         List<Estado> list = repository.listAll();
         return list.stream().map(EstadoResponseDTO::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<EstadoResponseDTO> getAll(int page, int pageSize) {
+        List<Estado> list = repository.findAll().page(page, pageSize).list();
+        return list.stream().map(e -> new EstadoResponseDTO(e)).collect(Collectors.toList());
     }
 
     @Override

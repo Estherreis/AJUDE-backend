@@ -28,7 +28,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 @Path("/auth")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -75,7 +74,7 @@ public class AuthResource {
 
     @GET
     @Path("/lotacoes")
-    @RolesAllowed({"Logado"})
+    @RolesAllowed({ "Logado" })
     public List<OrgaoPerfilResponseDTO> getLotacoes() {
         String login = jwt.getSubject();
         Usuario usuario = usuarioService.findByLogin(login);
@@ -84,7 +83,7 @@ public class AuthResource {
 
     @POST
     @Path("/lotacoes")
-    @RolesAllowed({"Logado"})
+    @RolesAllowed({ "Logado" })
     public Response setLotacao(OrgaoPerfilDTO orgaoPerfil) {
         String login = jwt.getSubject();
         Usuario usuario = usuarioService.findByLogin(login);

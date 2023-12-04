@@ -1,18 +1,19 @@
 package br.unitins.projeto.dto.movimentacao;
 
-import java.time.LocalDate;
-
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
 public record MovimentacaoDTO(
 
-    Long idAtendimento,
+        Long idAtendimento,
 
-    LocalDate dataInclusao,
+        @NotEmpty(message = "É necessário informar o campo título")
+        @Size(max = 100, message = "O campo título deve possuir no máximo 100 caracteres.")
+        String tituloMovimentacao,
 
-    String tituloMovimentacao
+        @Size(max = 350, message = "O campo descrição deve possuir no máximo 350 caracteres.")
+        String descricao
 
 ) {
-    
+
 }

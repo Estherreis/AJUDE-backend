@@ -12,7 +12,7 @@ public record BeneficiarioResponseDTO(
     String cpf,
     String rg,
     LocalDate dataNascimento,
-    EnderecoResponseDTO enderecoResponseDTO,
+    EnderecoResponseDTO endereco,
     String nis,
     String cpfPai
 ) {

@@ -13,12 +13,14 @@ import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
@@ -35,7 +37,7 @@ public class BeneficiarioResource {
     private static final Logger LOG = Logger.getLogger(BeneficiarioResource.class);
 
     @GET
-    @RolesAllowed({"Administrador", "Assistente"})
+    //@RolesAllowed({"Administrador", "Assistente"})
     public List<BeneficiarioResponseDTO> getAll() {
         LOG.info("Buscando todos os beneficiarios.");
         return service.getAll();
@@ -43,55 +45,38 @@ public class BeneficiarioResource {
 
     @GET
     @Path("/{id}")
-    @RolesAllowed({"Administrador", "Assistente"})
+    //@RolesAllowed({"Administrador", "Assistente"})
     public BeneficiarioResponseDTO findById(@PathParam("id") Long id) {
         LOG.info("Buscando um beneficiarios pelo id.");
         return service.findById(id);
     }
+    @GET
+    @Path("/count")
+    //@RolesAllowed({"Administrador", "Assistente"})
+    public Long count() {
+        LOG.info("Buscando a quantidade de beneficiarios.");
+        return service.count();
+    }
 
     @POST
-    @RolesAllowed({"Administrador", "Assistente"})
+    //@RolesAllowed({"Administrador", "Assistente"})
     public Response insert(BeneficiarioDTO dto) {
         LOG.infof("Inserindo um beneficiarios: %s", dto.nome());
-        Result result = null;
 
-        try {
-            BeneficiarioResponseDTO response = service.create(dto);
-            LOG.infof("Beneficiario (%d) criado com sucesso.", response.id());
-            return Response.status(Status.CREATED).entity(response).build();
-        } catch (ConstraintViolationException e) {
-            LOG.error("Erro ao incluir um beneficiario.");
-            LOG.debug(e.getMessage());
-            result = new Result(e.getConstraintViolations());
-        } catch (Exception e) {
-            LOG.fatal("Erro sem identificacao: " + e.getMessage());
-            result = new Result(e.getMessage(), false);
-        }
-
-        return Response.status(Status.NOT_FOUND).entity(result).build();
+        BeneficiarioResponseDTO response = service.create(dto);
+        LOG.infof("Beneficiario (%d) criado com sucesso.", response.id());
+        return Response.status(Status.CREATED).entity(response).build();
     }
 
     @PUT
     @Path("/{id}")
-    @RolesAllowed({"Administrador", "Assistente"})
+    //@RolesAllowed({"Administrador", "Assistente"})
     public Response update(@PathParam("id") Long id, BeneficiarioDTO dto) {
         LOG.infof("Alterando um beneficiarios: %s", dto.nome());
-        Result result = null;
 
-        try {
-            BeneficiarioResponseDTO response = service.update(id, dto);
-            LOG.infof("Beneficiario (%d) alterado com sucesso.", response.id());
-            return Response.ok(response).build();
-        } catch (ConstraintViolationException e) {
-            LOG.error("Erro ao alterar um beneficiario.");
-            LOG.debug(e.getMessage());
-            result = new Result(e.getConstraintViolations());
-        } catch (Exception e) {
-            LOG.fatal("Erro sem identificacao: " + e.getMessage());
-            result = new Result(e.getMessage(), false);
-        }
-
-        return Response.status(Status.NOT_FOUND).entity(result).build();
+        BeneficiarioResponseDTO response = service.update(id, dto);
+        LOG.infof("Beneficiario (%d) alterado com sucesso.", response.id());
+        return Response.ok(response).build();
     }
 
     @DELETE
@@ -118,14 +103,15 @@ public class BeneficiarioResource {
     }
 
     @GET
-    @Path("/search/{nome}")
-    @RolesAllowed({"Administrador", "Assistente"})
-    public Response search(@PathParam("nome") String nome) {
-        LOG.infof("Pesquisando beneficiarios pelo nome: %s", nome);
+    @Path("/search/{nomeOuCpf}")
+    public Response search(@PathParam("nomeOuCpf") String nomeOuCpf,
+            @QueryParam("page") @DefaultValue("0") int page,
+            @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+        LOG.infof("Pesquisando estados pelo nome/cpf: %s", nomeOuCpf );
         Result result = null;
 
         try {
-            List<BeneficiarioResponseDTO> response = service.findByNome(nome);
+            List<BeneficiarioResponseDTO> response = service.findByNomeOuCpf(nomeOuCpf, page, pageSize);
             LOG.infof("Pesquisa realizada com sucesso.");
             return Response.ok(response).build();
         } catch (ConstraintViolationException e) {
@@ -141,25 +127,8 @@ public class BeneficiarioResource {
     }
 
     @GET
-    @Path("/search/{cpf}")
-    @RolesAllowed({"Administrador", "Assistente"})
-    public Response searchCpf(@PathParam("cpf") String cpf) {
-        LOG.infof("Pesquisando beneficiarios pelo nome: %s", cpf);
-        Result result = null;
-
-        try {
-            List<BeneficiarioResponseDTO> response = service.findByCpf(cpf);
-            LOG.infof("Pesquisa realizada com sucesso.");
-            return Response.ok(response).build();
-        } catch (ConstraintViolationException e) {
-            LOG.error("Erro ao pesquisar beneficiarios.");
-            LOG.debug(e.getMessage());
-            result = new Result(e.getConstraintViolations());
-        } catch (Exception e) {
-            LOG.fatal("Erro sem identificacao: " + e.getMessage());
-            result = new Result(e.getMessage(), false);
-        }
-
-        return Response.status(Status.NOT_FOUND).entity(result).build();
+    @Path("/search/{nomeOuCpf}/count")
+    public Long count(@PathParam("nomeOuCpf") String nomeOuCpf) {
+        return service.countByNomeOuCpf(nomeOuCpf);
     }
 }

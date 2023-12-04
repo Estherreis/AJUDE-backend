@@ -1,10 +1,11 @@
 package br.unitins.projeto.dto.beneficiario;
 
-import java.time.LocalDate;
-
 import br.unitins.projeto.dto.endereco.EnderecoDTO;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+
+import java.time.LocalDate;
 
 public record BeneficiarioDTO(
 
@@ -20,7 +21,6 @@ public record BeneficiarioDTO(
     @Size(max = 12, message = "O campo RG deve possuir no máximo 12 caracteres.")
     String rg,
 
-    @NotBlank(message = "O campo CPF Pai/Mãe deve ser informado.")
     @Size(max = 11, message = "O campo CPF do Pai/Mãe deve possuir no máximo 11 caracteres.")
     String cpfPais,
 
@@ -28,8 +28,9 @@ public record BeneficiarioDTO(
     @Size(max = 15, message = "O campo NIS deve possuir no máximo 15 caracteres.")
     String nis,
 
-    LocalDate nascimento,
+    @JsonFormat(pattern = "yyy-MM-dd")
+    LocalDate dataNascimento,
 
-    EnderecoDTO enderecoDTO
+    EnderecoDTO endereco
 
 ) {}

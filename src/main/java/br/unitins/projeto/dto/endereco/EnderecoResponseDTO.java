@@ -9,6 +9,7 @@ public record EnderecoResponseDTO(
     Long id,
     MunicipioResponseDTO municipio,
     EstadoResponseDTO estado,
+    String numero,
     String bairro,
     String logradouro,
     String complemento
@@ -16,6 +17,6 @@ public record EnderecoResponseDTO(
 ) {
         public EnderecoResponseDTO(Endereco entity){
             this(entity.getId(), new MunicipioResponseDTO(entity.getMunicipio()), new EstadoResponseDTO(entity.getEstado()), 
-            entity.getBairro(), entity.getLogradouro(), entity.getComplemento());
+            entity.getNumero(), entity.getBairro(), entity.getLogradouro(), entity.getComplemento());
         }
 }

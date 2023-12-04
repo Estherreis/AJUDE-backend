@@ -23,7 +23,7 @@ public class Usuario extends DefaultEntity {
     @Column(nullable = false)
     private String senha;
 
-    @Column(name = "nivel_sigilo", nullable = false)
+    @Column(name = "nivel_sigilo")
     private Integer nivelSigilo;
 
     @Column(name = "ativo", nullable = false)
@@ -87,4 +87,5 @@ public class Usuario extends DefaultEntity {
     public void setPerfil(Set<Perfil> perfil) {
         this.perfil = perfil;
     }
+    
 }

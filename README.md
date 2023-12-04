@@ -1,4 +1,4 @@
-# Projeto Tópicos
+# AJUDE - Projeto Integrador
 
 This project uses Quarkus, the Supersonic Subatomic Java Framework.
 

@@ -3,6 +3,7 @@ package br.unitins.projeto.repository;
 import java.util.List;
 
 import br.unitins.projeto.model.Beneficiario;
+import io.quarkus.hibernate.orm.panache.PanacheQuery;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -29,4 +30,10 @@ public class BeneficiarioRepository implements PanacheRepository<Beneficiario> {
                 idOrgao).list();
     }
 
+    public PanacheQuery<Beneficiario> findByNomeOrCpf(String nomeOuCpf) {
+        if (nomeOuCpf != null) {
+            return find("UPPER(nome) LIKE ?1 OR UPPER(cpf) LIKE ?1  ", "%" + nomeOuCpf.toUpperCase() + "%");
+        }
+        return null;
+    }
 }

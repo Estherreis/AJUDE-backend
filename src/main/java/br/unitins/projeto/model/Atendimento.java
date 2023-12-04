@@ -20,15 +20,18 @@ public class Atendimento extends DefaultEntity {
     @JoinColumn(name = "id_beneficiario", nullable = false)
     private Beneficiario beneficiario;
 
-    @Column(name = "data_inclusao", nullable = false)
-    private LocalDateTime dataInclusao;
+    @Column(name = "data_cadastro", nullable = false)
+    private LocalDateTime dataCadastro;
 
     @ManyToOne
     @JoinColumn(name = "id_usuario_inclusao", nullable = false)
     private Usuario usuarioInclusao;
 
-    @Column(name = "descricao", nullable = false)
+    @Column(name = "descricao", nullable = false, length = 900)
     private String descricao;
+
+    @Column(name = "tipo_beneficio", nullable = false)
+    private String tipoBeneficio;
 
     @Column(name = "situacao_atendimento", nullable = false)
     private SituacaoAtendimento situacaoAtendimento;
@@ -49,12 +52,12 @@ public class Atendimento extends DefaultEntity {
         this.beneficiario = beneficiario;
     }
 
-    public LocalDateTime getDataInclusao() {
-        return dataInclusao;
+    public LocalDateTime getDataCadastro() {
+        return dataCadastro;
     }
 
-    public void setDataInclusao(LocalDateTime dataInclusao) {
-        this.dataInclusao = dataInclusao;
+    public void setDataCadastro(LocalDateTime dataCadastro) {
+        this.dataCadastro = dataCadastro;
     }
 
     public Usuario getUsuarioInclusao() {
@@ -71,6 +74,14 @@ public class Atendimento extends DefaultEntity {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+
+    public String getTipoBeneficio() {
+        return tipoBeneficio;
+    }
+
+    public void setTipoBeneficio(String tipoBeneficio) {
+        this.tipoBeneficio = tipoBeneficio;
     }
 
     public SituacaoAtendimento getSituacaoAtendimento() {

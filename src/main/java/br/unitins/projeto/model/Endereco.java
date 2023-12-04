@@ -23,7 +23,7 @@ public class Endereco extends DefaultEntity {
     private String logradouro;
 
     @Column(nullable = false, length = 30)
-    private Long numero;
+    private String numero;
 
     @Column(nullable = true, length = 30)
     private String complemento;
@@ -61,11 +61,11 @@ public class Endereco extends DefaultEntity {
         this.logradouro = logradouro;
     }
 
-    public Long getNumero() {
+    public String getNumero() {
         return numero;
     }
 
-    public void setNumero(Long numero) {
+    public void setNumero(String numero) {
         this.numero = numero;
     }
 

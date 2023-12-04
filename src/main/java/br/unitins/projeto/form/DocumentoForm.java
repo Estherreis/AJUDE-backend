@@ -1,22 +1,23 @@
 package br.unitins.projeto.form;
 
+import jakarta.ws.rs.FormParam;
+import jakarta.ws.rs.core.MediaType;
 import org.jboss.resteasy.annotations.providers.multipart.PartType;
 
-import jakarta.ws.rs.FormParam;
-
 public class DocumentoForm {
-    
+
     @FormParam("id")
+    @PartType(MediaType.TEXT_PLAIN)
     private Long id;
 
     @FormParam("nomeDocumento")
+    @PartType(MediaType.TEXT_PLAIN)
     private String nomeDocumento;
 
     @FormParam("documento")
     @PartType("application/octet-stream")
     private byte[] documento;
 
-    
     public String getNomeDocumento() {
         return nomeDocumento;
     }

@@ -6,7 +6,6 @@ import jakarta.validation.constraints.Size;
 
 public record EnderecoDTO (
 
-
     @NotBlank(message = "O campo idMunicipio deve ser informado.")
     Long idMunicipio,
 
@@ -19,7 +18,7 @@ public record EnderecoDTO (
     String logradouro,
 
     @NotEmpty(message = "O campo numero deve ser informado.")
-    Long numero,
+    String numero,
     
     @Size(max = 40, message = "O sigla deve posssuir 40 caracteres.")
     String complemento

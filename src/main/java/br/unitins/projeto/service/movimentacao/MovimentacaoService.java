@@ -1,13 +1,19 @@
 package br.unitins.projeto.service.movimentacao;
 
-import java.util.List;
-
 import br.unitins.projeto.dto.movimentacao.MovimentacaoDTO;
 import br.unitins.projeto.dto.movimentacao.MovimentacaoResponseDTO;
+import jakarta.validation.Valid;
+
+import java.util.List;
 
 public interface MovimentacaoService {
-    
-    MovimentacaoResponseDTO lancarMovimentacao(MovimentacaoDTO movimentacaoDTO);
 
-    List<MovimentacaoResponseDTO> listarPorAtendimento(Long idAtendimento);
+    List<MovimentacaoResponseDTO> findByAtendimento(Long idAtendimento, int page, int pageSize);
+
+    MovimentacaoResponseDTO lancarMovimentacao(@Valid MovimentacaoDTO movimentacaoDTO);
+
+    MovimentacaoResponseDTO findById(Long id);
+
+    Long countByAtendimento(Long idAtendimento);
+
 }

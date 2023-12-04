@@ -9,7 +9,7 @@ import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Beneficiario extends DefaultEntity {
-    
+
     @Column(nullable = false, length = 40)
     private String nome;
 
@@ -29,10 +29,8 @@ public class Beneficiario extends DefaultEntity {
     @Column(nullable = false, length = 30)
     private String nis;
 
-    @Column(nullable = false, length = 30)
+    @Column(length = 30)
     private String cpfPai;
-
-
 
     public String getNome() {
         return nome;

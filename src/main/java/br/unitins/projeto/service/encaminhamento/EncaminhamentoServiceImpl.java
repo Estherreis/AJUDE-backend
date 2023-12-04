@@ -15,11 +15,13 @@ import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Valid;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.NotFoundException;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -46,8 +48,13 @@ public class EncaminhamentoServiceImpl implements EncaminhamentoService {
     Validator validator;
 
     @Override
-    public List<EncaminhamentoResponseDTO> findByAtendimento(Long idAtendimento) {
-        List<Encaminhamento> list = repository.findByAtendimento(idAtendimento);
+    public List<EncaminhamentoResponseDTO> findByAtendimento(Long idAtendimento, int page, int pageSize) {
+        List<Encaminhamento> list = repository.findByAtendimento(idAtendimento).page(page, pageSize)
+                .list()
+                .stream()
+                .sorted(Comparator.comparing(Encaminhamento::getDataInclusao).reversed())
+                .collect(Collectors.toList());
+
         return list.stream().map(EncaminhamentoResponseDTO::new).collect(Collectors.toList());
     }
 
@@ -63,16 +70,20 @@ public class EncaminhamentoServiceImpl implements EncaminhamentoService {
 
     @Override
     @Transactional
-    public EncaminhamentoResponseDTO create(EncaminhamentoDTO encaminhamentoDTO) throws ConstraintViolationException {
+    public EncaminhamentoResponseDTO create(@Valid EncaminhamentoDTO encaminhamentoDTO) throws ConstraintViolationException {
         validar(encaminhamentoDTO);
 
         Encaminhamento entity = new Encaminhamento();
         Atendimento atendimento = atendimentoRepository.findById(encaminhamentoDTO.idAtendimento());
         Orgao orgaoDestino = orgaoRepository.findById(encaminhamentoDTO.idOrgao());
 
-        String login = jwt.getSubject();
+//        String login = jwt.getSubject();
+//        Usuario usuario = usuarioService.findByLogin(login);
+//        Orgao orgaoUsuarioLogado = orgaoRepository.findById(Long.valueOf(jwt.getClaim("orgao").toString()));
+
+        String login = "unitins";
         Usuario usuario = usuarioService.findByLogin(login);
-        Orgao orgaoUsuarioLogado = orgaoRepository.findById(Long.valueOf(jwt.getClaim("orgao").toString()));
+        Orgao orgaoUsuarioLogado = orgaoRepository.findById(1L);
 
         entity.setOrgaoAtual(atendimento.getOrgao());
         entity.setOrgaoDestino(orgaoDestino);
@@ -95,4 +106,10 @@ public class EncaminhamentoServiceImpl implements EncaminhamentoService {
         if (!violations.isEmpty())
             throw new ConstraintViolationException(violations);
     }
+
+    @Override
+    public Long countByAtendimento(Long idAtendimento) {
+        return this.repository.findByAtendimento(idAtendimento).count();
+    }
+
 }

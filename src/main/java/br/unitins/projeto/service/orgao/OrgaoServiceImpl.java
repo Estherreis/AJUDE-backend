@@ -2,19 +2,20 @@ package br.unitins.projeto.service.orgao;
 
 import br.unitins.projeto.dto.orgao.OrgaoDTO;
 import br.unitins.projeto.dto.orgao.OrgaoResponseDTO;
-import br.unitins.projeto.dto.usuario.UsuarioResponseDTO;
 import br.unitins.projeto.model.Orgao;
 import br.unitins.projeto.repository.MunicipioRepository;
 import br.unitins.projeto.repository.OrgaoRepository;
+import io.quarkus.panache.common.Page;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Valid;
 import jakarta.validation.Validator;
 import jakarta.ws.rs.NotFoundException;
-import org.eclipse.microprofile.jwt.JsonWebToken;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -38,6 +39,12 @@ public class OrgaoServiceImpl implements OrgaoService {
     }
 
     @Override
+    public List<OrgaoResponseDTO> getAll(int page, int pageSize) {
+        List<Orgao> list = repository.findAll().page(page, pageSize).list();
+        return list.stream().map(e -> new OrgaoResponseDTO(e)).collect(Collectors.toList());
+    }
+
+    @Override
     public OrgaoResponseDTO findById(Long id) {
         Orgao orgao = repository.findById(id);
 
@@ -49,7 +56,7 @@ public class OrgaoServiceImpl implements OrgaoService {
 
     @Override
     @Transactional
-    public OrgaoResponseDTO create(OrgaoDTO orgaoDTO) throws ConstraintViolationException {
+    public OrgaoResponseDTO create(@Valid OrgaoDTO orgaoDTO) throws ConstraintViolationException {
         validar(orgaoDTO);
 
         Orgao entity = new Orgao();
@@ -64,7 +71,7 @@ public class OrgaoServiceImpl implements OrgaoService {
 
     @Override
     @Transactional
-    public OrgaoResponseDTO update(Long id, OrgaoDTO orgaoDTO) throws ConstraintViolationException {
+    public OrgaoResponseDTO update(Long id, @Valid OrgaoDTO orgaoDTO) throws ConstraintViolationException {
         validar(orgaoDTO);
 
         Orgao entity = repository.findById(id);
@@ -96,6 +103,22 @@ public class OrgaoServiceImpl implements OrgaoService {
     @Transactional
     public void delete(Long id) {
         repository.deleteById(id);
+    }
+
+    @Override
+    public List<OrgaoResponseDTO> findByNomeOuSigla(String nomeOuSigla, int page, int pageSize) {
+        List<Orgao> list = this.repository.findByNomeOuSigla(nomeOuSigla)
+                .page(Page.of(page, pageSize))
+                .list().stream()
+                .sorted(Comparator.comparing(Orgao::getNome))
+                .collect(Collectors.toList());
+
+        return list.stream().map(OrgaoResponseDTO::new).collect(Collectors.toList());
+    }
+
+    @Override
+    public Long countByNomeOuSigla(String nomeOuSigla) {
+        return this.repository.findByNomeOuSigla(nomeOuSigla).count();
     }
 
     @Override
