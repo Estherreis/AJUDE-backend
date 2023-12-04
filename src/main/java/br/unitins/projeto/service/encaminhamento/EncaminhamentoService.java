@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface EncaminhamentoService {
 
-    List<EncaminhamentoResponseDTO> findByAtendimento(Long idAtendimento);
+    List<EncaminhamentoResponseDTO> findByAtendimento(Long idAtendimento, int page, int pageSize);
 
     EncaminhamentoResponseDTO findById(Long id);
 

@@ -1,18 +1,18 @@
 package br.unitins.projeto.resource;
 
-import br.unitins.projeto.application.Result;
 import br.unitins.projeto.dto.encaminhamento.EncaminhamentoDTO;
 import br.unitins.projeto.dto.encaminhamento.EncaminhamentoResponseDTO;
 import br.unitins.projeto.service.encaminhamento.EncaminhamentoService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
-import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import org.jboss.logging.Logger;
@@ -40,9 +40,11 @@ public class EncaminhamentoResource {
     @GET
     @Path("/{idAtendimento}")
     @RolesAllowed({"Administrador", "Assistente"})
-    public List<EncaminhamentoResponseDTO> findByAtendimento(@PathParam("idAtendimento") Long idAtendimento) {
+    public List<EncaminhamentoResponseDTO> findByAtendimento(@PathParam("idAtendimento") Long idAtendimento,
+                                                             @QueryParam("page") @DefaultValue("0") int page,
+                                                             @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
         LOG.info("Buscando os encaminhamentos de um atendimento.");
-        return service.findByAtendimento(idAtendimento);
+        return service.findByAtendimento(idAtendimento, page, pageSize);
     }
 
     @POST

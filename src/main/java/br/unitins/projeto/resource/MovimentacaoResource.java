@@ -1,31 +1,30 @@
 package br.unitins.projeto.resource;
 
-import java.io.IOException;
-import java.util.List;
-
-import jakarta.annotation.security.RolesAllowed;
-import org.jboss.logging.Logger;
-import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
-
 import br.unitins.projeto.application.Result;
+import br.unitins.projeto.dto.movimentacao.MovimentacaoDTO;
 import br.unitins.projeto.dto.movimentacao.MovimentacaoResponseDTO;
 import br.unitins.projeto.form.DocumentoForm;
-import br.unitins.projeto.dto.movimentacao.MovimentacaoDTO;
 import br.unitins.projeto.service.file.FileService;
 import br.unitins.projeto.service.movimentacao.MovimentacaoService;
 import jakarta.inject.Inject;
-import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DefaultValue;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.ResponseBuilder;
 import jakarta.ws.rs.core.Response.Status;
+import org.jboss.logging.Logger;
+import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
+
+import java.io.IOException;
+import java.util.List;
 
 @Path("/movimentacoes")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -40,8 +39,18 @@ public class MovimentacaoResource {
     @Inject
     FileService fileService;
 
+    @GET
+    @Path("/atendimento/{idAtendimento}")
+    //@RolesAllowed({"Administrador", "Assistente"})
+    public List<MovimentacaoResponseDTO> findByAtendimento(@PathParam("idAtendimento") Long idAtendimento,
+                                                           @QueryParam("page") @DefaultValue("0") int page,
+                                                           @QueryParam("pageSize") @DefaultValue("10") int pageSize) {
+        LOG.info("Buscando os encaminhamentos de um atendimento.");
+        return movimentacaoService.findByAtendimento(idAtendimento, page, pageSize);
+    }
+
     @POST
-    @RolesAllowed({"Administrador", "Assistente"})
+    //@RolesAllowed({"Administrador", "Assistente"})
     public Response insert(MovimentacaoDTO dto) {
         LOG.infof("Inserindo um movimentacaos: %s", dto.tituloMovimentacao());
 
@@ -52,16 +61,15 @@ public class MovimentacaoResource {
 
     @GET
     @Path("/{id}")
-    @RolesAllowed({"Administrador", "Assistente"})
-    public List<MovimentacaoResponseDTO> findById(@PathParam("id") Long id) {
-
+    //@RolesAllowed({"Administrador", "Assistente"})
+    public MovimentacaoResponseDTO findById(@PathParam("id") Long id) {
         LOG.info("Buscando movimentações pelo id do atendimento.");
-        return movimentacaoService.listarPorAtendimento(id);
+        return movimentacaoService.findById(id);
     }
 
     @GET
-    @Path("/document/download/{nomeDocumento}")
-    @RolesAllowed({"Administrador", "Assistente"})
+    @Path("/documento/download/{nomeDocumento}")
+    //@RolesAllowed({"Administrador", "Assistente"})
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response download(@PathParam("nomeDocumento") String nomeDocumento) {
         ResponseBuilder response = Response.ok(fileService.download(nomeDocumento));
@@ -71,7 +79,7 @@ public class MovimentacaoResource {
 
     @PATCH
     @Path("/documento/upload")
-    @RolesAllowed({"Administrador", "Assistente"})
+    //@RolesAllowed({"Administrador", "Assistente"})
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response salvarImagem(@MultipartForm DocumentoForm form) {
 
@@ -83,4 +91,11 @@ public class MovimentacaoResource {
             return Response.status(Status.CONFLICT).entity(result).build();
         }
     }
+
+    @GET
+    @Path("/atendimento/{idAtendimento}/count")
+    public Long count(@PathParam("idAtendimento") Long idAtendimento) {
+        return movimentacaoService.countByAtendimento(idAtendimento);
+    }
+
 }
